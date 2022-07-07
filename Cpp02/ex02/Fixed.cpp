@@ -6,7 +6,7 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:46:10 by iren              #+#    #+#             */
-/*   Updated: 2022/07/07 18:15:29 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/08 00:43:30 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,22 +139,6 @@ Fixed Fixed::operator+(const Fixed &other) const
 	return (o);
 }
 
-Fixed operator+(const Fixed &other, int ivalue)
-{
-	Fixed	o;
-
-	o.setRawBits( other.getRawBits() + ivalue);
-	return (o);
-}
-
-Fixed operator+(int value, const Fixed &rhs)
-{
-	Fixed	o;
-	
-	o.setRawBits(rhs.getRawBits() + value);
-	return (o);
-}
-
 // substraction
 Fixed	Fixed::operator-(const Fixed &other) const
 {
@@ -163,22 +147,6 @@ Fixed	Fixed::operator-(const Fixed &other) const
 	o.setRawBits(this->fixedPoint - other.getRawBits());
 	return (o);
 
-}
-
-Fixed operator-(const Fixed &other, int ivalue)
-{
-	Fixed	o;
-
-	o.setRawBits( other.getRawBits() - ivalue);
-	return (o);
-}
-
-Fixed operator-(int value, const Fixed &rhs)
-{
-	Fixed	o;
-	
-	o.setRawBits(rhs.getRawBits() - value);
-	return (o);
 }
 
 // multiplication
@@ -191,24 +159,6 @@ Fixed	Fixed::operator*(const Fixed &other) const
 
 }
 
-Fixed operator*(const Fixed &other, int ivalue)
-{
-	Fixed	o;
-
-	o.setRawBits( other.getRawBits() * ivalue);
-	return (o);
-
-}
-
-Fixed operator*(int value, const Fixed &rhs)
-{
-	Fixed	o;
-
-	o.setRawBits(rhs.getRawBits() * value);
-	return (o);
-
-}
-
 // division
 Fixed	Fixed::operator/(const Fixed &other) const
 {
@@ -217,29 +167,7 @@ Fixed	Fixed::operator/(const Fixed &other) const
 	if (other.getRawBits() == 0)
 		o.setRawBits(0);
 	else
-		o.setRawBits(this->fixedPoint / other.getRawBits() * (1 << this->fracBits));
-	return (o);
-}
-
-Fixed operator/(const Fixed &other, int ivalue)
-{
-	Fixed	o;
-
-	if (ivalue == 0)
-		o.setRawBits(0);
-	else
-		o.setRawBits( other.getRawBits() / ivalue);
-	return (o);
-}
-
-Fixed operator/(int value, const Fixed &rhs)
-{
-	Fixed	o;
-
-	if (value == 0)
-		o.setRawBits(0);
-	else
-		o.setRawBits(rhs.getRawBits() / value);
+		o.setRawBits(this->fixedPoint / other.getRawBits() * (1 << o.fracBits));
 	return (o);
 }
 
