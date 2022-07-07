@@ -28,10 +28,10 @@ class	Fixed
 		int operator!=(const Fixed &rhs) const;
 
 		// arithmetic operators
-		float operator+(const Fixed &rhs) const; // fixed1 + fixed2
-		float operator-(const Fixed &rhs) const;
-		float operator*(const Fixed &rhs) const;
-		float operator/(const Fixed &rhs) const;
+		Fixed	operator+(const Fixed &rhs) const; // fixed1 + fixed2
+		Fixed	operator-(const Fixed &rhs) const;
+		Fixed	operator*(const Fixed &rhs) const;
+		Fixed	operator/(const Fixed &rhs) const;
 
 		// increment decrement
 		Fixed &operator++();

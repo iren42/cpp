@@ -6,7 +6,7 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:50:37 by iren              #+#    #+#             */
-/*   Updated: 2022/07/07 11:30:17 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/07 18:14:01 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,63 +20,102 @@ int	main()
 
 //	a = Fixed( 1234.4321f ); // float + copy assignement
 
+
+	std::cout <<"Testing increment and decrement"    << std::endl;
 	std::cout << "a is " << a  << std::endl;
-	std::cout << "pre a is " << ++a  << std::endl;
+	std::cout << "++a is " << ++a  << std::endl;
 	std::cout << "a is " << a  << std::endl;
-	std::cout << "post a is " << a++  << std::endl;
+	std::cout << "a++ is " << a++  << std::endl;
 	std::cout << "a is " << a  << std::endl;
+	std::cout << "a-- is " << a--  << std::endl;
+	std::cout << "a is " << a  << std::endl;
+	std::cout << "--a is " << --a  << std::endl ;
+	std::cout << "a is " << a  << std::endl << std::endl;
+
+
+	std::cout <<"Testing comparaisons"    << std::endl;
+	Fixed	f(-10);
+	std::cout << "a is " << a << std::endl;
 	std::cout << "b is " << b << std::endl;
 	std::cout << "c is " << c << std::endl;
+	std::cout << "f is " << f << std::endl;
 	std::cout << "\ta < b is " << (a < b)   << std::endl;
-	std::cout << "\ta =< b is " << (a <= b)   << std::endl;
+	std::cout << "\ta <= b is " << (a <= b)   << std::endl;
 	std::cout << "\ta > b is " << (a > b)   << std::endl;
 	std::cout << "\ta >= b is " << (a >= b)   << std::endl;
 	std::cout << "\tb >= c is " << (b >= c)   << std::endl;
 	std::cout << "\tb <= c is " << (b <= c)   << std::endl;
 	std::cout << "\tb == c is " << (b == c)   << std::endl;
+	std::cout << "\tb != c is " << (b != c)   << std::endl;
 	std::cout << "\ta == c is " << (a == c)   << std::endl;
+	std::cout << "\tc == c is " << (c == c)   << std::endl;
+	std::cout << "\tc != c is " << (c != c)   << std::endl;
+	std::cout << "\tf == c is " << (f == c)   << std::endl;
+	std::cout << "\tf != c is " << (f != c)   << std::endl << std::endl;
+	
+	std::cout <<"Testing arithmetics with only Fixed objects"    << std::endl;
+	Fixed	g(6);
+	Fixed	h(3);
+	std::cout << "g is " << g << std::endl;
+	std::cout << "h is " << h << std::endl;
+
 	std::cout << "\tb - c is " << (b - c)   << std::endl;
 	std::cout << "\ta - c is " << (a - c)   << std::endl;
-	std::cout << "\ta - c is " << (c - a)   << std::endl;
+	std::cout << "\tc - a is " << (c - a)   << std::endl;
 	std::cout << "\tb + c is " << (b + c)   << std::endl;
+	std::cout << "\ta + b is " << (a + b)   << std::endl;
+	std::cout << "\ta * b is " << (a * b)   << std::endl;
+	std::cout << "\tg * h is " << (g * h)   << std::endl;
+	std::cout << "\ta / b is " << (a / b)   << std::endl;
+	std::cout << "\tg / h is " << (g / h)   << std::endl;
+	std::cout << "\tg * g + h / b is " << (g * g + h / b)   << std::endl;
+	std::cout << "\ta + b + b - c is " << (a + b + b - c)   << std::endl << std::endl;
+	
+	std::cout <<"Testing arithmetics with Fixed objects and integers"    << std::endl;
 	Fixed  d( 0 ); // int
 	std::cout << "d is " << d << std::endl;
 	d = d + 1;
-	std::cout << "d = d + 1; d is " << d << std::endl;
-	d = b + 1;
-	std::cout << "d = b + 1; d is " << d << std::endl;
-	d = 1 + b;
-	std::cout << "d = 1 + b; d is " << d << std::endl;
-	std::cout << "b is " << b << std::endl;
-	d = d + 1;
-	std::cout << "d = d + 1; d is " << d << std::endl;
-	d = 1 + d;
-	std::cout << "d = 1 + d; d is " << d << std::endl;
-	d = 256 + d - 3 ;
-	std::cout << "d = 256 + d - 3; d is " << d << std::endl;
-	d - 1;
-	std::cout << "d - 1; No change, d is " << d << std::endl;
-	d + 1;
-	std::cout << "d + 1; No change, d is " << d << std::endl;
-	1 + d;
-	std::cout << "1 + d; No change, d is " << d << std::endl;
-	1 - d;
-	std::cout << "1 - d; No change, d is " << d << std::endl;
+	std::cout << "\td = d + 1; d is " << d << std::endl;
 	d = d - 1;
-	std::cout << "d = d - 1; d is " << d << std::endl;
+	std::cout << "\td = d - 1; d is " << d << std::endl;
+	d = 1 + d;
+	std::cout << "\td = 1 + d; d is " << d << std::endl;
+	d = 1 - d;
+	std::cout << "\td = 1 - d; d is " << d << std::endl;
+	d = 258 + d - 2 ;
+	std::cout << "\td = 258 + d - 2; d is " << d << std::endl;
+	d - 1;
+	std::cout << "\td - 1; No change, d is " << d << std::endl;
+	d + 1;
+	std::cout << "\td + 1; No change, d is " << d << std::endl;
+	1 + d;
+	std::cout << "\t1 + d; No change, d is " << d << std::endl;
+	1 - d;
+	std::cout << "\t1 - d; No change, d is " << d << std::endl;
+	d = d + d + 1;
+	std::cout << "\td = d + d + 1; d is " << d << std::endl;
 
+	std::cout << "b is " << b << std::endl;
+	std::cout << "d is " << d << std::endl;
 	std::cout << "\tb * d is " << (b * d)   << std::endl;
 	std::cout << "\tb * 3 is " << (b * 3)   << std::endl;
-	std::cout << "\tb / 0 is " << (b / 0)   << std::endl; // inf
+	std::cout << "\tb / 0 is " << (b / 0)   << std::endl << std::endl; // -> 0
 //	std::cout << "division by 0 is " << (5/0)  << std::endl; // Werror=div-by-zero
 
 
+	std::cout <<"Testing min max"    << std::endl;
 	Fixed const e( Fixed( 5.05f ) * Fixed( 2 ) );
 	std::cout << e   << std::endl;
-	std::cout << Fixed::max(a, b)   << std::endl;
-	std::cout << Fixed::min(a, b)   << std::endl;
-	std::cout << Fixed::max(c, b)   << std::endl;
-	std::cout << Fixed::min(c, b)   << std::endl;
+	std::cout << "a is " << a << std::endl;
+	std::cout << "b is " << b << std::endl;
+	std::cout << "c is " << c << std::endl;
+	std::cout << "d is " << d << std::endl;
+	std::cout << "\tmax(a, d) is " << Fixed::max(a, d)   << std::endl;
+	std::cout << "\tmin(a, d) is " << Fixed::min(a, d)   << std::endl;
+	std::cout << "\tb const; max(a, b) is " << Fixed::max(a, b)   << std::endl;
+	std::cout << "\tb const; min(a, b) is " << Fixed::min(a, b)   << std::endl;
+	std::cout << "\tc and b const; max(c, b) is " << Fixed::max(c, b)   << std::endl;
+	std::cout << "\tc and b const; min(c, b) is " << Fixed::min(c, b)   << std::endl;
 //	std::cout <<    << std::endl;
 //	std::cout <<    << std::endl;
 	return 0;
