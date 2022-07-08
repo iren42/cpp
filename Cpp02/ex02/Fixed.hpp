@@ -50,17 +50,6 @@ class	Fixed
 		static Fixed &max(const Fixed &f1, const Fixed &f2);
 };
 
-// More arithmetic operators
-Fixed	operator+(int value, const Fixed &other); // ivalue + fixed 
-Fixed	operator-(int value, const Fixed &other);
-Fixed	operator*(int value, const Fixed &other);
-Fixed	operator/(int value, const Fixed &other);
-
-Fixed	operator+(const Fixed &other, int ivalue); // fixed + ivalue
-Fixed	operator-(const Fixed &other, int ivalue);
-Fixed	operator*(const Fixed &other, int ivalue);
-Fixed	operator/(const Fixed &other, int ivalue);
-
 
 std::ostream& operator<<(std::ostream& os, const Fixed &fixed);
 #endif
