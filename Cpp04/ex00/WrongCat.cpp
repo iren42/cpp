@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 00:40:01 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 00:44:36 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ WrongCat &WrongCat::operator=(const WrongCat &other)
 
 void	WrongCat::makeSound(void) const
 {
-	std::cout << "Miaou" << std::endl;
+	std::cout << "Myeh" << std::endl;
 }
