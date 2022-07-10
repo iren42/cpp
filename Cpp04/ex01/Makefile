@@ -1,4 +1,4 @@
-NAME	= ex00
+NAME	= ex01
 
 HEADER	=	Animal.hpp \
 			Cat.hpp \
@@ -20,11 +20,11 @@ OBJ	= $(SRC:.cpp=.o)
 
 GCH	= $(HEADER:.hpp=.hpp.gch)
 
-CC		= g++
+CC		= c++
 
 CFLAG	= -Wall -Wextra -Werror -std=c++98
 
-SANI	= -fsanitize=address -g
+SANI	= -fsanitize=address -g3 -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
