@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 23:21:55 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/04 15:13:53 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 19:38:14 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ Zombie::Zombie(std::string name)
 
 Zombie::~Zombie()
 {
-	std::clog << "Zombie " << this->name << " destroyed" << std::endl;
+	std::cout << "Zombie " << this->name << " destroyed" << std::endl;
 }

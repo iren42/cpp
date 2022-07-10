@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 23:21:55 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/04 15:49:43 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 19:39:13 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ Zombie::Zombie() {}
 
 Zombie::~Zombie()
 {
-	std::clog << "Zombie " << this->name << " destroyed." << std::endl;
+	std::cout << "Zombie " << this->name << " destroyed." << std::endl;
 }
 
 void	Zombie::announce(void)

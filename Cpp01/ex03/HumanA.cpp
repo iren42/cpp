@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 00:47:30 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/04 17:22:14 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 19:39:37 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 // Constructor
 HumanA::HumanA(std::string name, Weapon &weapon) : name(name), weapon(weapon)
 {
-	std::clog << "HumanA " << this->name << " created" << std::endl;
+	std::cout << "HumanA " << this->name << " created" << std::endl;
 }
 
 // Destructor
 HumanA::~HumanA()
 {
-	std::clog << "HumanA " << this->name << " destroyed" << std::endl;
+	std::cout << "HumanA " << this->name << " destroyed" << std::endl;
 }
 
 // Functions

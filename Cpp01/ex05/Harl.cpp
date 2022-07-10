@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 17:22:39 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/05 19:17:44 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 19:37:31 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 Harl::Harl()
 {
 #ifdef DEBUG
-	std::cerr << "Harl created" << std::endl;
+	std::cout << "Harl created" << std::endl;
 #endif
 }
 
@@ -24,7 +24,7 @@ Harl::Harl()
 Harl::~Harl()
 {
 #ifdef DEBUG
-	std::cerr << "Harl destroyed" << std::endl;
+	std::cout << "Harl destroyed" << std::endl;
 #endif
 }
 

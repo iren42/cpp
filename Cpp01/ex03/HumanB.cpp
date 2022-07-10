@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 00:47:30 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/04 17:20:58 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 19:39:49 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ HumanB::HumanB(std::string name)
 {
 	this->name = name;
 	this->weapon = NULL;
-	std::clog << "HumanB " << this->name << " created" << std::endl;
+	std::cout << "HumanB " << this->name << " created" << std::endl;
 }
 
 // Destructor
 HumanB::~HumanB()
 {
-	std::clog << "HumanB " << this->name << " destroyed" << std::endl;
+	std::cout << "HumanB " << this->name << " destroyed" << std::endl;
 }
 
 // Functions
