@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 23:18:40 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 14:55:32 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/10 16:33:36 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define PHONEBOOK_HPP
 
 #include <iostream>
-#include <cstdlib>
 #include <limits>
 #include <cctype>
 
