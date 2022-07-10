@@ -6,13 +6,24 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 21:39:58 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/02 22:11:53 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 16:19:24 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 
-static int	isInputSpace(string str)
+PhoneBook::PhoneBook()
+{
+	std::cout << "Phonebook constructor" << std::endl;
+	this->nbContacts = 0;
+}
+
+PhoneBook::~PhoneBook()
+{
+	std::cout << "Phonebook destroyed" << std::endl;
+}
+
+static int	isInputSpace(std::string str)
 {
 	int	i;
 	char	*s;
@@ -28,86 +39,92 @@ static int	isInputSpace(string str)
 	return (1);
 }
 
-static string	getInfo(string text)
+static std::string	getInfo(std::string text)
 {
-	string	input;
+	std::string	input;
 
 	while (true)
 	{
-		cout << text  << flush;
-		getline(cin , input);
-		if (cin.eof())
+		std::cout << text  << std::endl;
+		getline(std::cin , input);
+		if (std::cin.eof())
 			return ("EOF");
 		if (input != "" && !isInputSpace(input))
 			break ;
-		cerr << "Error: empty line" << endl;
+		std::cout << "Error: empty line" << std::endl;
 	}
 	return (input);
 }
 
 void	PhoneBook::add()
 {
-	string	input1;
-	string	input2;
-	string	input3;
-	int		input4;
-	string	input5;
-	string	input;
+	std::string			input1;
+	std::string			input2;
+	std::string			input3;
+	unsigned long int	input4;
+	std::string			input5;
+	std::string			input;
 
 	// Prompt the user for informations
 	input1 = getInfo("First name: ");
-	if (cin.eof())
+	if (std::cin.eof())
 		return ;
+	std::cout << "Your input: " << input1 << std::endl;
 	input2 = getInfo("Last name: ");
-	if (cin.eof())
+	if (std::cin.eof())
 		return ;
+	std::cout << "Your input: " << input2 << std::endl;
 	input3 = getInfo("Nickname: ");
-	if (cin.eof())
+	if (std::cin.eof())
 		return ;
+	std::cout << "Your input: " << input3 << std::endl;
 	// Prompt the user until valid integer
 	while (true)
 	{	
-		cout << "Phone number: " << flush;
-		if (cin >> input4)
+		std::cout << "Phone number: " << std::endl;
+		if (std::cin >> input4)
 			break ;
-		if (cin.eof())
+		if (std::cin.eof())
 			return ;
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cerr << "Invalid input. Retry." << endl;
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cout << "Invalid input. Retry." << std::endl;
 	}
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	std::cout << "Your input: " << input4 << std::endl;
 	input5 = getInfo("Darkest secret: ");
-	if (cin.eof())
+	if (std::cin.eof())
 		return ;
+	std::cout << "Your input: " << input5 << std::endl;
+	// Warning message for overwriting contacts
+	if (this->nbContacts >= 8)
+	{
+		std::cout << "////////////////////////////////////////////" << std::endl;
+		std::cout << "//////////////////WARNING///////////////////" << std::endl;
+		std::cout << "////////////////////////////////////////////" << std::endl;
+		std::cout << "Maximum number of contacts reached." << std::endl;
+		std::cout << "Overwriting the oldest contact at each new addition." << std::endl;
+		std::cout << "////////////////////////////////////////////" << std::endl;
+	}
 	input = getInfo("Add this new contact in the phonebook? (y/!y) ");
+	std::cout << "Your input: " << input << std::endl;
 	if (input == "y")
 	{
-		// Warning message for overwriting contacts
-		if (this->nbContacts >= 8)
-		{
-			cout << "////////////////////////////////////////////" << endl;
-			cout << "//////////////////WARNING///////////////////" << endl;
-			cout << "////////////////////////////////////////////" << endl;
-			cout << "Maximum number of contacts reached." << endl;
-			cout << "Overwriting the oldest contact at each new addition." << endl;
-			cout << "////////////////////////////////////////////" << endl;
-		}
 		// Set contact info
 		c[this->nbContacts % 8].setFirstname(input1);
 		c[this->nbContacts % 8].setLastname(input2);
 		c[this->nbContacts % 8].setNickname(input3);
 		c[this->nbContacts % 8].setSecret(input5);
 		c[this->nbContacts % 8].setPhoneNumber(input4);
-		cout << "New contact created!" << endl;
+		std::cout << "New contact created!" << std::endl;
 		this->nbContacts++;
 	}
 	else
-		cout << "Cancelled contact addition" << endl;
+		std::cout << "Cancelled contact addition" << std::endl;
 }
 
-// display a 10 characters-wide column for a string 
-static void	displayColumn(string name)
+// display a 10 characters-wide column for a std::string 
+static void	displayColumn(std::string name)
 {
 	int	j;
 	char	*s;
@@ -117,11 +134,11 @@ static void	displayColumn(string name)
 	while (j < 10)
 	{
 		if (j == 9 && j + 1 < (int)name.length())
-			cout << "." << flush;
+			std::cout << "." << std::flush;
 		else if (j < (int)name.length())
-			cout << s[j] << flush;
+			std::cout << s[j] << std::flush;
 		else
-			cout << " " << flush;
+			std::cout << " " << std::flush;
 		j++;
 	}
 }
@@ -132,10 +149,10 @@ static void	displayIndex(int n)
 	int	i;
 
 	i = 1;
-	cout << n << flush;
+	std::cout << n << std::flush;
 	while (i < 10)
 	{
-		cout << " " << flush;
+		std::cout << " " << std::flush;
 		i++;
 	}
 }
@@ -147,44 +164,46 @@ void	PhoneBook::search()
 
 	i = 0;
 	// Display saved contacts list
-	cout << "Index     |Firstname |Lastname  |Nickname  " << endl;
-	cout << "___________________________________________" << endl;
+	std::cout << "Index     |Firstname |Lastname  |Nickname  " << std::endl;
+	std::cout << "___________________________________________" << std::endl;
 	while (i < 8)
 	{
 		displayIndex(i);	
-		cout << "|" << flush;
+		std::cout << "|" << std::flush;
 		displayColumn(c[i].getFirstname());
-		cout << "|" << flush;
+		std::cout << "|" << std::flush;
 		displayColumn(c[i].getLastname());
-		cout << "|" << flush;
+		std::cout << "|" << std::flush;
 		displayColumn(c[i].getNickname());
-		cout << endl;
+		std::cout << std::endl;
 		i++;
 	}
-	cout << "___________________________________________" << endl;
+	std::cout << "___________________________________________" << std::endl;
 
 	// Prompt user to enter an index from the list
 	if (this->nbContacts == 0)
-		cout << "No contact to inquire." << endl;
+		std::cout << "No contact to inquire." << std::endl;
 	else
 	{
 		// Prompt the user until valid integer
 		while (true)
 		{	
-			cout << "Enter the index of the contact to inquire: " << flush;
-			if (cin >> input && (input >= 0 && input <= this->nbContacts - 1 && input <= 7))
+			std::cout << "Enter the index of the contact to inquire: " << std::endl;
+			if (std::cin >> input && (input >= 0 && input <= this->nbContacts - 1 && input <= 7))
 				break ;
-			if (cin.eof())
+			if (std::cin.eof())
 				return ;
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			cerr << "Invalid index. Retry." << endl;
+			std::cout << "Your input: " << input << std::endl;
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "Invalid index. Retry." << std::endl;
 		}
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cout << "Your input: " << input << std::endl;
 		// Display contact info
-		cout << "*****" << endl;
-		cout << "Contact information of entry " << input << endl;
+		std::cout << "*****" << std::endl;
+		std::cout << "Contact information of entry " << input << std::endl;
 		c[input].display();
-		cout << "*****" << endl;
+		std::cout << "*****" << std::endl;
 	}
 }

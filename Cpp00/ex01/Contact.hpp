@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 23:15:43 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/02 18:40:39 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 16:17:03 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,29 @@
 
 #include <iostream>
 
-using namespace std;
-
 class	Contact
 {
 	private:
-		string	firstname;
-		string	lastname;
-		string	nickname;
-		int		phoneNumber;
-		string	secret;
+		std::string	firstname;
+		std::string	lastname;
+		std::string	nickname;
+		std::string	secret;
+		unsigned long int	phoneNumber;
 
 	public:
 		Contact();
 		~Contact();
-		void	setFirstname(string newName);
-		void	setLastname(string newName);
-		void	setNickname(string newName);
-		void	setPhoneNumber(int newNb);
-		void	setSecret(string newSecret);
-		string	getFirstname();
-		string	getLastname();
-		string	getNickname();
-		string	getSecret();
-		int		getPhoneNumber();
-		void	display();
+		void		setFirstname(std::string newName);
+		void		setLastname(std::string newName);
+		void		setNickname(std::string newName);
+		void		setPhoneNumber(unsigned long int newNb);
+		void		setSecret(std::string newSecret);
+		std::string	getFirstname();
+		std::string	getLastname();
+		std::string	getNickname();
+		std::string	getSecret();
+		unsigned long int	getPhoneNumber();
+		void		display();
 };
 
 #endif

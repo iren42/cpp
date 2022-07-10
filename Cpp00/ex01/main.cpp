@@ -6,43 +6,45 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 23:28:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/02 21:28:16 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 15:43:50 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.hpp"
 
-using namespace std;
-
-int	main()
+int	main(void)
 {
-	string	input;
+	std::string	input;
 	PhoneBook	pb;
 
 	while (true)
 	{
-		cout << "Enter a command: (ADD, SEARCH or EXIT)" << endl;
-		getline(cin, input, '\n');
+		std::cout << "Enter a command: (ADD, SEARCH or EXIT)" << std::endl;
+		getline(std::cin, input, '\n');
+		std::cout << "Your input: " << input << std::endl;
 		if (input == "ADD")
 			pb.add();
 		else if (input == "SEARCH")
 			pb.search();
-		else if (input == "EXIT" || cin.eof())
+		else if (input == "EXIT" || std::cin.eof())
 		{
-			cout << "Exit." << endl;	
+			std::cout << "Exit." << std::endl;	
 			break ;
 		}
 		else
 		{
-			cerr << input << flush;
-			cerr << " is not a valid command." << endl;
+			std::cout << input << std::endl;
+			std::cout << "is not a valid command." << std::endl;
+			std::cin.clear();
 		}
-		if (cin.eof())
+		if (std::cin.eof())
 		{
-			cout << "Triggered EOF" << endl;
-			cout << "Exit." << endl;	
+			std::cout << "Triggered EOF" << std::endl;
+			std::cout << "Exit." << std::endl;	
 			break ;
 		}
-		cout << "End of main loop" << endl;
+#ifdef DEBUG
+		std::cout << "End of main loop" << std::endl;
+#endif
 	}
 }
