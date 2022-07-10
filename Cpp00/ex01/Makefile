@@ -1,8 +1,7 @@
 NAME	= phonebook
 
 HEADER	=	PhoneBook.hpp \
-			Contact.hpp \
-			main.hpp
+			Contact.hpp
 
 SRC		=	PhoneBook.cpp \
 			Contact.cpp \

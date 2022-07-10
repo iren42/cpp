@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 21:39:58 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 16:57:28 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/10 17:17:55 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ static void	displayColumn(std::string name)
 
 	j = 0;
 	i = 0;
-	len = name.length();
+	len = (int)name.length();
 	s = &name[0];
 	while (j < 10)
 	{
@@ -147,7 +147,7 @@ static void	displayColumn(std::string name)
 	*/
 		if (j < 10 - len)
 			std::cout << " " << std::flush;
-		else if (j == 9 && 10 - len < 0)
+		else if (j == 9 && j < len)
 			std::cout << "." << std::flush;
 		else
 			std::cout << s[i++] << std::flush;

@@ -6,11 +6,13 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 23:28:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 16:30:45 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/10 17:11:16 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "main.hpp"
+#include <iostream>
+#include "PhoneBook.hpp"
+#include "Contact.hpp"
 
 int	main(void)
 {
