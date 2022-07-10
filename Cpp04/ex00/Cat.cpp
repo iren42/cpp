@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/09 23:38:02 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/10 11:56:08 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ Cat::Cat(const Cat &other) : Animal(other)
 
 Cat &Cat::operator=(const Cat &other)
 {
-	std::cout << "Cat Copy assignment constructor called" << std::endl;
 	Animal::operator=(other);
+	std::cout << "Cat Copy assignment constructor called" << std::endl;
+	this->type = other.type;
 	return (*this);
 }
 
