@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 21:39:58 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 16:19:24 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/10 16:57:28 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,18 +127,30 @@ void	PhoneBook::add()
 static void	displayColumn(std::string name)
 {
 	int	j;
+	int	i;
 	char	*s;
+	int	len;
 
 	j = 0;
+	i = 0;
+	len = name.length();
 	s = &name[0];
 	while (j < 10)
 	{
-		if (j == 9 && j + 1 < (int)name.length())
+	/*
+		if (j == 9 && j + 1 < (int)name.length()) // left-aligned
 			std::cout << "." << std::flush;
 		else if (j < (int)name.length())
 			std::cout << s[j] << std::flush;
 		else
 			std::cout << " " << std::flush;
+	*/
+		if (j < 10 - len)
+			std::cout << " " << std::flush;
+		else if (j == 9 && 10 - len < 0)
+			std::cout << "." << std::flush;
+		else
+			std::cout << s[i++] << std::flush;
 		j++;
 	}
 }
@@ -148,13 +160,13 @@ static void	displayIndex(int n)
 {
 	int	i;
 
-	i = 1;
-	std::cout << n << std::flush;
-	while (i < 10)
+	i = 0;
+	while (i < 9)
 	{
 		std::cout << " " << std::flush;
 		i++;
 	}
+	std::cout << n << std::flush;
 }
 
 void	PhoneBook::search()
@@ -164,7 +176,7 @@ void	PhoneBook::search()
 
 	i = 0;
 	// Display saved contacts list
-	std::cout << "Index     |Firstname |Lastname  |Nickname  " << std::endl;
+	std::cout << "Index     |First name|Last name |Nickname  " << std::endl;
 	std::cout << "___________________________________________" << std::endl;
 	while (i < 8)
 	{
