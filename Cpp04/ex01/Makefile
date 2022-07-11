@@ -18,7 +18,6 @@ SRC		=	Animal.cpp \
 
 OBJ	= $(SRC:.cpp=.o)
 
-GCH	= $(HEADER:.hpp=.hpp.gch)
 
 CC		= c++
 
@@ -28,17 +27,17 @@ SANI	= -fsanitize=address -g3 -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
-all		: $(NAME) $(HEADER)
+all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -c $(SRC)
+		$(CC) $(CFLAG) $(SANI) -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -o $@ $(OBJ) 
+		$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
 
 
 clean	:
-		$(RM) $(OBJ) $(GCH)
+		$(RM) $(OBJ)
 
 fclean	: clean
 		$(RM) $(NAME)

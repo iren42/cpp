@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/10 20:52:30 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/11 15:16:06 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ Brain::~Brain()
 Brain::Brain()
 {
 	std::cout << "Brain Default constructor called" << std::endl;
-	this->index = 0;
 }
 
 Brain::Brain(const Brain &other)
@@ -37,20 +36,11 @@ Brain &Brain::operator=(const Brain &other)
 	int	size;
 
 	size = sizeof(other.ideas) / sizeof(*(other.ideas));
-	//	std::cout << "Size array = " << size << std::endl;
 	i = 0;
 	while (i < size)
 	{
 		this->ideas[i] = other.ideas[i];
 		i++;
 	}
-	this->index = other.index;
 	return (*this);
-}
-
-
-void	Brain::addIdea(std::string newIdea)
-{
-	this->ideas[index] = newIdea;
-	this->index++;
 }
