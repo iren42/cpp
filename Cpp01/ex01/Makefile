@@ -20,10 +20,10 @@ SANI	=
 
 RM		= rm -f
 
-all		: $(NAME) $(HEADER)
+all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -c $(SRC)
+		$(CC) $(CFLAG) $(SANI) -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
 		$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
