@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:35:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 18:55:32 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:42:36 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,14 @@ int	main()
 	try
 	{
 		int	i;
-		Bureaucrat	josia("Josia", 140);
+		Bureaucrat	lola("Lola", 140);
+		Bureaucrat	josia(lola);
+		Bureaucrat	alex("Alex", 130);
+		josia = alex;
 
 		i = 0;
 		std::cout << josia << std::endl;
-		while (i < 20)
+		while (i < 30)
 		{
 			josia.downGrade();
 			std::cout << josia << std::endl;
