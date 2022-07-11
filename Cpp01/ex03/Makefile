@@ -17,18 +17,17 @@ CC		= c++
 
 CFLAG	= -Wall -Wextra -Werror -std=c++98
 
-SANI	= i
-#-fsanitize=address -g -Wconversion -Wsign-conversion
+SANI	= -fsanitize=address -g -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
 all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -c $(SRC)
+		$(CC) $(CFLAG) $(SANI) -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -o $@ $(OBJ) 
+		$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ)
 
 
 clean	:
