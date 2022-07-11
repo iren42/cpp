@@ -24,7 +24,7 @@ $(NAME) : $(OBJ)
 
 
 clean	:
-		$(RM) $(OBJ) $(GCH)
+		$(RM) $(OBJ)
 
 fclean	: clean
 		$(RM) $(NAME)
