@@ -11,8 +11,6 @@ SRC		=	Weapon.cpp \
 
 OBJ	= $(SRC:.cpp=.o)
 
-GCH	= $(HEADER:.hpp=.hpp.gch)
-
 CC		= c++
 
 CFLAG	= -Wall -Wextra -Werror -std=c++98
@@ -31,7 +29,7 @@ $(NAME) : $(OBJ) $(HEADER)
 
 
 clean	:
-		$(RM) $(OBJ) $(GCH)
+		$(RM) $(OBJ)
 
 fclean	: clean
 		$(RM) $(NAME)
