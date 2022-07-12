@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 13:46:37 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/09 16:07:12 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 22:24:52 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 ScavTrap::~ScavTrap() 
 {
-	std::cout << "ScavTrap Destructor called" << std::endl;
+	std::cout << "ScavTrap " << this->name << " Destructor called" << std::endl;
 }
 
 ScavTrap::ScavTrap() : ClapTrap()
@@ -42,7 +42,8 @@ ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other)
 ScavTrap &ScavTrap::operator=(const ScavTrap &other)
 {
 	std::cout << "ScavTrap Copy assignment constructor called" << std::endl;
-	ClapTrap::operator=(other);
+	if (this != &other)
+		ClapTrap::operator=(other);
 	return (*this);
 }
 

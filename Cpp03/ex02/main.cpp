@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:37:02 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/09 21:25:16 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 22:26:03 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,25 @@ int	main()
 	s.beRepaired(1);
 	c.beRepaired(1);
 	f.beRepaired(1);
+
+	// test copy and copy assign
+	FragTrap ff("Jepi");
+	FragTrap frag(f);
+	ff = f;
 	i = 0;
-	while (i < 100)
+	while (i < 110)
 	{
+		std::cout << std::endl << "i = " << i << std::endl;
 		s.attack("Serpenta"); // attack Serpenta until out of energy
 		c.attack("Serpenta"); // attack Serpenta until out of energy
 		f.attack("Serpenta"); // attack Serpenta until out of energy
+		ff.attack("Ori"); // attack Ori until out of energy
+		frag.attack("Tamtam"); // attack Tamtam until out of energy
+		
 		i++;
 	}
 
 	s.guardGate();
 	f.highFivesGuys();
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/09 13:46:37 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/09 16:10:59 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 22:23:44 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 //#define DEBUG
 FragTrap::~FragTrap() 
 {
-	std::cout << "FragTrap Destructor called" << std::endl;
+	std::cout << "FragTrap " << this->name <<" Destructor called" << std::endl;
 }
 
 FragTrap::FragTrap() : ClapTrap()
@@ -42,7 +42,10 @@ FragTrap::FragTrap(const FragTrap &other) : ClapTrap(other)
 FragTrap &FragTrap::operator=(const FragTrap &other)
 {
 	std::cout << "FragTrap Copy assignment constructor called" << std::endl;
-	ClapTrap::operator=(other);
+	if (this != &other)
+	{
+		ClapTrap::operator=(other);
+	}
 	return (*this);
 }
 
