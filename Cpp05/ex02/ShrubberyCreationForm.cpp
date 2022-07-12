@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 23:47:41 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 07:15:45 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 #include "Bureaucrat.hpp"
 //		std::cout << << std::endl;
 
-#define GRADE_EXEC_SC 137
-
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
 #ifdef DEBUG
@@ -25,7 +23,7 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 #endif
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : Form("Shrubbery Creation", 145), target(target)
+ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : Form("Shrubbery Creation", 145, target, 137)
 {
 #ifdef DEBUG
 	std::cout << "ShrubberyCreationForm Default constructor called" << std::endl;
@@ -49,16 +47,16 @@ ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationF
 	if (this != &other)
 	{
 		Form::operator=(other);
-		this->target = other.target;
 	}
 	return (*this);
 }
 
-void	ShrubberyCreationForm::execute(Bureaucrat const &executor)
+void	ShrubberyCreationForm::execute(Bureaucrat const &executor) const
 {
-	if (this->getIsSigned() && executor.getGrade() <= GRADE_EXEC_SC)
+	try
 	{
-		std::string		filename = this->target;
+		Form::execute(executor);
+		std::string		filename = getTarget();
 		filename.append("_shrubbery");
 
 		std::cout << filename << std::endl;
@@ -86,8 +84,8 @@ void	ShrubberyCreationForm::execute(Bureaucrat const &executor)
 
 		ofs.close();
 	}
-	else if (!this->getIsSigned())
-		throw (Form::GradeTooLowException("Exception: form is not signed"));
-	else
-		throw (Form::GradeTooLowException("Exception: grade is too low to execute"));
+	catch(const std::exception& e)
+	{
+		std::cout << "Caught: " << e.what() << std::endl;
+	}
 }

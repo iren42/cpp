@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:35:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 23:51:16 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 08:29:05 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ int	main()
 		sonia.signForm(form);
 		sonia.signForm(form1);
 		sonia.signForm(form2);
-		//		form1.beSigned(albert); // same thing as above but w/o console msg on top of that
-		form.execute(albert);
-		form1.execute(albert);
-		form2.execute(albert);
+		albert.executeForm(form);
+		albert.executeForm(form1);
+		albert.executeForm(form2);
+		// same thing as above but w/o console msg on top of that
+		//	form1.beSigned(albert);
+		//	form.execute(albert);
 
 	}
 	catch (std::exception &e)

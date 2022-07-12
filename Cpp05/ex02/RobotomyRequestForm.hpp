@@ -8,8 +8,6 @@
 
 class RobotomyRequestForm : public Form
 {
-	private:
-		std::string	target;
 
 	public:
 		~RobotomyRequestForm();
@@ -17,7 +15,7 @@ class RobotomyRequestForm : public Form
 		RobotomyRequestForm(const RobotomyRequestForm &other);
 		RobotomyRequestForm &operator = (const RobotomyRequestForm &other);
 
-		void	execute(Bureaucrat const &executor);
+		void	execute(Bureaucrat const &executor) const;
 
 };
 

@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 23:02:42 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 07:59:21 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include "Bureaucrat.hpp"
 
 //		std::cout << << std::endl;
-//#define DEBUG
-#define GRADE_EXEC_RR 45
-
 RobotomyRequestForm::~RobotomyRequestForm()
 {
 #ifdef DEBUG
@@ -24,7 +21,7 @@ RobotomyRequestForm::~RobotomyRequestForm()
 #endif
 }
 
-RobotomyRequestForm::RobotomyRequestForm(std::string target) : Form("Robotomy Request", 72), target(target)
+RobotomyRequestForm::RobotomyRequestForm(std::string target) : Form("Robotomy Request", 72, target, 45)
 {
 #ifdef DEBUG
 	std::cout << "RobotomyRequestForm Default constructor called" << std::endl;
@@ -48,23 +45,23 @@ RobotomyRequestForm &RobotomyRequestForm::operator=(const RobotomyRequestForm &o
 	if (this != &other)
 	{
 		Form::operator=(other);
-		this->target = other.target;
 	}
 	return (*this);
 }
 
-void	RobotomyRequestForm::execute(Bureaucrat const &executor)
+void	RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
-	if (this->getIsSigned() && executor.getGrade() <= GRADE_EXEC_RR)
+	try
 	{
+	Form::execute(executor);
 		srand((unsigned int)time(NULL));
 		if (std::rand() % 2)
-			std::cout << "Drrr... " << this->target << " has been robotomized successfully!" << std::endl;
+			std::cout << "Drrr... " << this->getTarget() << " has been robotomized successfully!" << std::endl;
 		else
 			std::cout << "Robotomy failed" << std::endl;
 	}
-	else if (!this->getIsSigned())
-		throw (Form::GradeTooLowException("Exception: form is not signed"));
-	else
-		throw (Form::GradeTooLowException("Exception: grade is too low to execute"));
+	catch (std::exception &e)
+	{
+		std::cout << "Caught: " << e.what() << std::endl;
+	}
 }

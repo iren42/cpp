@@ -8,20 +8,24 @@ class	Form
 {
 	private:
 		const std::string	name;
+		const std::string	target;
 		const	int	grade;
+		const int execGrade;
 		bool	isSigned;
 
 	public:
 		virtual ~Form();
-		Form(std::string name, int grade);
+		Form(std::string name, int grade, std::string target, int executeGrade);
 		Form(const Form &other);
 		Form &operator = (const Form &other);
 
 		std::string	getName() const;
+		std::string	getTarget() const;
 		bool	getIsSigned() const;
-		int	getGrade() const;
+		int		getGrade() const;
+		int		getExecGrade() const;
 		void	beSigned(const Bureaucrat b);
-		virtual void	execute(Bureaucrat const &executor) = 0;
+		virtual void execute(Bureaucrat const &bureaucrat) const = 0;
 
 		// Exception classes
 		class	GradeTooLowException : public std::exception

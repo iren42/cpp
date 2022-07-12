@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 23:05:57 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 07:21:59 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Form::~Form()
 #endif
 }
 
-Form::Form(std::string name, int grade) : name(name), grade(grade), isSigned(0)
+Form::Form(std::string name, int grade, std::string target, int execGrade) : name(name), target(target), grade(grade), execGrade(execGrade), isSigned(0)
 {
 #ifdef DEBUG
 	std::cout << "Form Default constructor called" << std::endl;
@@ -34,7 +34,7 @@ Form::Form(std::string name, int grade) : name(name), grade(grade), isSigned(0)
 		throw (Form::GradeTooHighException("Exception: grade is too high to instantiate"));
 }
 
-Form::Form(const Form &other) : name(other.name), grade(other.grade), isSigned(other.isSigned)
+Form::Form(const Form &other) : name(other.name), grade(other.grade), execGrade(other.execGrade), isSigned(other.isSigned)
 {
 #ifdef DEBUG
 	std::cout << "Form Copy constructor called" << std::endl;
@@ -89,6 +89,12 @@ std::string	Form::getName() const
 {
 	return (this->name);
 }
+
+std::string	Form::getTarget() const
+{
+	return (this->target);
+}
+
 bool	Form::getIsSigned() const
 {
 	return (this->isSigned);
@@ -99,10 +105,23 @@ int	Form::getGrade() const
 	return (this->grade);
 }
 
+int	Form::getExecGrade() const
+{
+	return (this->execGrade);
+}
+
 void	Form::beSigned(const Bureaucrat b)
 {
 	if (b.getGrade() <= this->grade)
 		this->isSigned = 1;	
 	else
 		throw (Form::GradeTooLowException("Exception: grade too low to sign"));
+}
+
+void	Form::execute(Bureaucrat const &bureaucrat) const
+{
+	if (bureaucrat.getGrade() > this->execGrade)
+		throw Form::GradeTooLowException("Exception: grade too low to execute");
+	if (!this->isSigned)
+		throw Form::GradeTooLowException("Exception: form is not signed");
 }

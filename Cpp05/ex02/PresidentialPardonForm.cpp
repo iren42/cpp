@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 23:03:04 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 07:24:13 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 //		std::cout << << std::endl;
 //#define DEBUG
 
-#define GRADE_EXEC_PP 5
-
 PresidentialPardonForm::~PresidentialPardonForm()
 {
 #ifdef DEBUG
@@ -25,7 +23,7 @@ PresidentialPardonForm::~PresidentialPardonForm()
 #endif
 }
 
-PresidentialPardonForm::PresidentialPardonForm(std::string target) : Form("Presidential Pardon", 25), target(target)
+PresidentialPardonForm::PresidentialPardonForm(std::string target) : Form("Presidential Pardon", 25, target, 5)
 {
 #ifdef DEBUG
 	std::cout << "PresidentialPardonForm Default constructor called" << std::endl;
@@ -49,19 +47,19 @@ PresidentialPardonForm &PresidentialPardonForm::operator=(const PresidentialPard
 	if (this != &other)
 	{
 		Form::operator=(other);
-		this->target = other.target;
 	}
 	return (*this);
 }
 
-void	PresidentialPardonForm::execute(Bureaucrat const &executor)
+void	PresidentialPardonForm::execute(Bureaucrat const &executor) const
 {
-	if (this->getIsSigned() && executor.getGrade() <= GRADE_EXEC_PP)
+	try
 	{
-		std::cout << this->target << " has been pardoned by Zaphod Beeblebrox!" << std::endl;
+		Form::execute(executor);
+		std::cout << this->getTarget() << " has been pardoned by Zaphod Beeblebrox!" << std::endl;
 	}
-	else if (!this->getIsSigned())
-		throw (Form::GradeTooLowException("Exception: form is not signed"));
-	else
-		throw (Form::GradeTooLowException("Exception: grade is too low to execute"));
+	catch(const std::exception& e)
+	{
+		std::cout << "Caught: " << e.what() << std::endl;
+	}
 }
