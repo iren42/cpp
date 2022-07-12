@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:37:02 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/09 15:40:14 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 14:36:44 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ int	main()
 {
 	int	i;
 	ScavTrap c("Lola");
+	ClapTrap	original("Pompo");
 
 	i = 0;
 	c.attack("Jenny");
+	original.attack("Jenny");
 	c.takeDamage(1);
 	c.attack("Jenny");
 	c.takeDamage(100); // c is out
