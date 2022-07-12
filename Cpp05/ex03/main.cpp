@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:35:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/12 10:08:39 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:32:09 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	main()
 		form = intern.makeForm("Rental car", "iren");
 
 
-		std::cout << form << std::endl;
+		if (form != 0)
+		std::cout << *form << std::endl;
 	}
 	catch (std::exception &e)
 	{
