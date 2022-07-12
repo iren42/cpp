@@ -6,7 +6,7 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:46:10 by iren              #+#    #+#             */
-/*   Updated: 2022/07/08 00:43:30 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/12 14:01:47 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ Fixed::Fixed(const float input)
 	std::cout << "Float constructor called" << std::endl;
 #endif
 	int	res;
-	res = roundf(input * (1 << this->fracBits));
+	res = (int)roundf(input * (1 << this->fracBits));
 	this->fixedPoint = res;
 }
 
@@ -62,7 +62,8 @@ Fixed &Fixed::operator=(const Fixed &rhs)
 #ifdef DEBUG
 	std::cout << "Copy assignment operator called" << std::endl;
 #endif
-	this->fixedPoint = rhs.fixedPoint;
+	if (this != &rhs)
+		this->fixedPoint = rhs.fixedPoint;
 	return (*this);
 }
 
@@ -100,32 +101,32 @@ Fixed Fixed::operator--(int)
 // comparaison operators__________________________________
 int Fixed::operator<(const Fixed &other) const
 {
-	return (this->fixedPoint < other.getRawBits());
+	return (this->fixedPoint < other.fixedPoint);
 }
 
 int Fixed::operator<=(const Fixed &other) const
 {
-	return (this->fixedPoint <= other.getRawBits());
+	return (this->fixedPoint <= other.fixedPoint);
 }
 
 int Fixed::operator>(const Fixed &other) const
 {
-	return (this->fixedPoint > other.getRawBits());
+	return (this->fixedPoint > other.fixedPoint);
 }
 
 int Fixed::operator>=(const Fixed &other) const
 {
-	return (this->fixedPoint >= other.getRawBits());
+	return (this->fixedPoint >= other.fixedPoint);
 }
 
 int Fixed::operator==(const Fixed &other) const
 {
-	return (this->fixedPoint == other.getRawBits());
+	return (this->fixedPoint == other.fixedPoint);
 }
 
 int Fixed::operator!=(const Fixed &other) const
 {
-	return (this->fixedPoint != other.getRawBits());
+	return (this->fixedPoint != other.fixedPoint);
 }
 
 // Arithmetic operators_______________________________________
@@ -135,7 +136,7 @@ Fixed Fixed::operator+(const Fixed &other) const
 {
 	Fixed	o;
 
-	o.setRawBits(this->fixedPoint + other.getRawBits());
+	o.setRawBits(this->fixedPoint + other.fixedPoint);
 	return (o);
 }
 
@@ -144,7 +145,7 @@ Fixed	Fixed::operator-(const Fixed &other) const
 {
 	Fixed	o;
 
-	o.setRawBits(this->fixedPoint - other.getRawBits());
+	o.setRawBits(this->fixedPoint - other.fixedPoint);
 	return (o);
 
 }
@@ -154,7 +155,7 @@ Fixed	Fixed::operator*(const Fixed &other) const
 {
 	Fixed	o;
 
-	o.setRawBits(this->fixedPoint * other.getRawBits() / (1 << this->fracBits));
+	o.setRawBits(this->fixedPoint * other.fixedPoint / (1 << this->fracBits));
 	return (o);
 
 }
@@ -164,10 +165,10 @@ Fixed	Fixed::operator/(const Fixed &other) const
 {
 	Fixed	o;
 
-	if (other.getRawBits() == 0)
+	if (other.fixedPoint == 0)
 		o.setRawBits(0);
 	else
-		o.setRawBits(this->fixedPoint / other.getRawBits() * (1 << o.fracBits));
+		o.setRawBits(this->fixedPoint / other.fixedPoint * (1 << o.fracBits));
 	return (o);
 }
 
@@ -204,28 +205,28 @@ int		Fixed::toInt(void) const
 // returns a reference to the smallest one
 Fixed &Fixed::min(Fixed &f1, Fixed &f2)
 {
-	if (f1.getRawBits() < f2.getRawBits())
+	if (f1.fixedPoint < f2.fixedPoint)
 		return (f1);
 	return (f2);
 }
 
 Fixed &Fixed::max(Fixed &f1, Fixed &f2)
 {
-	if (f1.getRawBits() < f2.getRawBits())
+	if (f1.fixedPoint < f2.fixedPoint)
 		return (f2);
 	return (f1);
 }
 
 Fixed &Fixed::min(const Fixed &f1, const Fixed &f2)
 {
-	if (f1.getRawBits() < f2.getRawBits())
+	if (f1.fixedPoint < f2.fixedPoint)
 		return ((Fixed&)f1);
 	return ((Fixed&)f2);
 }
 
 Fixed &Fixed::max(const Fixed &f1, const Fixed &f2)
 {
-	if (f1.getRawBits() < f2.getRawBits())
+	if (f1.fixedPoint < f2.fixedPoint)
 		return ((Fixed&)f2);
 	return ((Fixed&)f1);
 }

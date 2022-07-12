@@ -6,7 +6,7 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:46:10 by iren              #+#    #+#             */
-/*   Updated: 2022/07/05 23:37:32 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/12 13:42:11 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,15 @@ Fixed::Fixed(const Fixed &rhs)
 	this->fp_nb_value = rhs.fp_nb_value;
 }
 
-// default behavior of all assignement operators is to copy the pointer location
-/*
+// default behavior of all assignment operators is to copy the pointer location
+
 Fixed &Fixed::operator = (const Fixed &rhs)
 {
-	std::cout << "Copy assignement operator called" << std::endl;
-	this->fp_nb_value = rhs.fp_nb_value;
+	std::cout << "Copy assignment operator called" << std::endl;
+	if (this != &rhs)
+		this->fp_nb_value = rhs.fp_nb_value;
 	return (*this);
-}*/
+}
 
 Fixed::~Fixed()
 {

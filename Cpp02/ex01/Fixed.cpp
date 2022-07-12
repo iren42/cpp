@@ -6,11 +6,17 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 22:46:10 by iren              #+#    #+#             */
-/*   Updated: 2022/07/06 18:26:01 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/12 13:51:45 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
+
+// Destructor
+Fixed::~Fixed()
+{
+	std::cout << "Destructor called" << std::endl;
+}
 
 // Constructors
 Fixed::Fixed()
@@ -29,7 +35,7 @@ Fixed::Fixed(const float input)
 {
 	std::cout << "Float constructor called" << std::endl;
 	int	res;
-	res = roundf(input * (1 << this->fracBits));
+	res = (int)roundf(input * (1 << this->fracBits));
 	this->fixedPoint = res;
 }
 
@@ -37,22 +43,18 @@ Fixed::Fixed(const float input)
 Fixed::Fixed(const Fixed &other)
 {
 	std::cout << "Copy constructor called" << std::endl;
-\	*this = other; // to call the copy assignement operator 
+	*this = other; // to call the copy assignement operator 
 }
 
 // default behavior of the assignment operator is to copy the pointer location
 Fixed &Fixed::operator = (const Fixed &rhs)
 {
 	std::cout << "Copy assignment operator called" << std::endl;
-	this->fixedPoint = rhs.fixedPoint;
+	if (this != &rhs)
+		this->fixedPoint = rhs.fixedPoint;
 	return (*this);
 }
 
-// Destructor
-Fixed::~Fixed()
-{
-	std::cout << "Destructor called" << std::endl;
-}
 
 // Member functions
 int	Fixed::getRawBits(void) const

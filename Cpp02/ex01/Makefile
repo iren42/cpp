@@ -8,28 +8,26 @@ SRC		=	Fixed.cpp \
 
 OBJ	= $(SRC:.cpp=.o)
 
-GCH	= $(HEADER:.hpp=.hpp.gch)
-
-CC		= g++
+CC		= c++
 
 CFLAG	= -Wall -Wextra -Werror -std=c++98
 
 SANI	= 
-#-fsanitize=address -g
+#-fsanitize=address -g -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
-all		: $(NAME) $(HEADER)
+all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -c $(SRC)
+		$(CC) $(CFLAG) $(SANI) -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) $(HEADER) -o $@ $(OBJ) 
+		$(CC) $(CFLAG) $(SANI)  -o $@ $(OBJ) 
 
 
 clean	:
-		$(RM) $(OBJ) $(GCH)
+		$(RM) $(OBJ)
 
 fclean	: clean
 		$(RM) $(NAME)
