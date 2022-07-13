@@ -6,9 +6,12 @@
 #include <climits>
 #include <limits>
 #include <cmath>
-#define FLT_MIN 1.175494351e-38F
-#define FLT_MAX 3.402823466e+38F
 
+# define RT   "\033[0m"
+# define RED     "\033[31m"      /* Red */
+# define GR   "\033[32m"      /* Green */
+# define YEL  "\033[33m"      /* Yellow */
+# define BL    "\033[34m"      /* Blue */
 class Literal
 {
 	private:

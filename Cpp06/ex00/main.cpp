@@ -6,7 +6,7 @@
 /*   By: iren <iren@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 04:21:21 by iren              #+#    #+#             */
-/*   Updated: 2022/07/13 14:00:16 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 01:03:10 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ int	main(int ac, char **av)
 	std::string	data = &av[1][0];
 	std::stringstream ss(data);
 	long double ld;
-	int	e = 'e';
-	e++;
-	std::cout << e << std::endl;
 /*	float	t = 42.f;
 
 	t++;
