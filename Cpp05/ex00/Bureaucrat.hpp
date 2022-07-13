@@ -18,6 +18,7 @@ class Bureaucrat
 
 		std::string	getName(void) const;
 		int			getGrade(void) const;
+		void	setGrade(int grade);
 		void	upGrade();
 		void	downGrade();
 

@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 16:35:24 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 19:42:36 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 18:59:49 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,19 @@ int	main()
 			std::cout << josia << std::endl;
 			i++;
 		}
+	}
+	catch (std::exception &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+
+	// TEST 4: set a grade too high
+	try
+	{
+
+		Bureaucrat	lola("Lola", 140);
+		lola.setGrade(0);
+		std::cout << lola << std::endl;
 	}
 	catch (std::exception &e)
 	{

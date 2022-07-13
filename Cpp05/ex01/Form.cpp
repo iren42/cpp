@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 20:56:30 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 19:32:20 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ Form::~Form()
 #endif
 }
 
-Form::Form(std::string name, int grade) : name(name), grade(grade), isSigned(0)
+Form::Form(std::string name, int gradeSign, int gradeExec) : name(name), gradeSign(gradeSign), gradeExec(gradeExec), isSigned(0)
 {
 #ifdef DEBUG
 	std::cout << "Form Default constructor called" << std::endl;
 #endif
-	if (grade > 150)
+	if (gradeSign > 150 || gradeExec > 150)
 		throw (Form::GradeTooLowException());
-	else if (grade < 1)
+	else if (gradeSign < 1 || gradeExec < 1)
 		throw (Form::GradeTooHighException());
 }
 
-Form::Form(const Form &other) : name(other.name), grade(other.grade), isSigned(other.isSigned)
+Form::Form(const Form &other) : name(other.name), gradeSign(other.gradeSign), gradeExec(other.gradeExec), isSigned(other.isSigned)
 {
 #ifdef DEBUG
 	std::cout << "Form Copy constructor called" << std::endl;
@@ -55,7 +55,7 @@ Form &Form::operator=(const Form &other)
 
 std::ostream &operator<<(std::ostream &os, const Form &rhs)
 {
-	return (os << rhs.getName() << ", form grade " << rhs.getGrade() << ", is signed " << rhs.getIsSigned());
+	return (os << rhs.getName() << ", form ; grade required to execute " << rhs.getGradeExec() << ", grade required to sign " << rhs.getGradeSign() << ", is signed " << rhs.getIsSigned());
 }
 
 const char	*Form::GradeTooLowException::what() const throw ()
@@ -77,14 +77,17 @@ bool	Form::getIsSigned() const
 	return (this->isSigned);
 }
 
-int	Form::getGrade() const
+int	Form::getGradeSign() const
 {
-	return (this->grade);
+	return (this->gradeSign);
 }
-
+int	Form::getGradeExec() const
+{
+	return (this->gradeExec);
+}
 void	Form::beSigned(const Bureaucrat b)
 {
-	if (b.getGrade() <= this->grade)
+	if (b.getGrade() <= this->gradeSign)
 		this->isSigned = 1;	
 	else
 		throw (Form::GradeTooLowException());

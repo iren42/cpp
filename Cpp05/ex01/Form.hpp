@@ -9,18 +9,20 @@ class	Form
 {
 	private:
 		const std::string	name;
-		const	int	grade;
+		const	int	gradeSign;
+		const	int	gradeExec;
 		bool	isSigned;
 
 	public:
 		~Form();
-		Form(std::string name, int grade);
+		Form(std::string name, int gradeSign, int gradeExec);
 		Form(const Form &other);
 		Form &operator = (const Form &other);
 
 		std::string	getName() const;
 		bool	getIsSigned() const;
-		int	getGrade() const;
+		int	getGradeSign() const;
+		int	getGradeExec() const;
 		void	beSigned(const Bureaucrat b);
 
 		// Exception classes

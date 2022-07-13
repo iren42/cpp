@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/11 20:49:58 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 19:04:47 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,15 @@ int	Bureaucrat::getGrade(void) const
 std::string	Bureaucrat::getName(void) const
 {
 	return (this->name);
+}
+
+void	Bureaucrat::setGrade(int grade)
+{
+	if (grade > 150)
+		throw (Bureaucrat::GradeTooLowException());
+	else if (grade < 1)
+		throw (Bureaucrat::GradeTooHighException());
+	this->grade = grade;
 }
 
 void	Bureaucrat::downGrade()
