@@ -53,11 +53,11 @@ Form &Form::operator=(const Form &other)
 	return (*this);
 }
 
+
 std::ostream &operator<<(std::ostream &os, const Form &rhs)
 {
-	return (os << rhs.getName() << ", form sign grade " << rhs.getGrade() << ", is signed " << rhs.getIsSigned() << ". Grade required to execute: " << rhs.getExecGrade());
+	return (os << rhs.getName() << ", form ; grade required to execute " << rhs.getExecGrade() << ", grade required to sign " << rhs.getGrade() << ", is signed " << rhs.getIsSigned());
 }
-
 // Exception classes
 
 Form::GradeTooLowException::~GradeTooLowException() throw() {}

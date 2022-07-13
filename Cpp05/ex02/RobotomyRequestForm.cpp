@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/12 07:59:21 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 20:28:01 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void	RobotomyRequestForm::execute(Bureaucrat const &executor) const
 {
 	try
 	{
-	Form::execute(executor);
-		srand((unsigned int)time(NULL));
+		Form::execute(executor);
 		if (std::rand() % 2)
 			std::cout << "Drrr... " << this->getTarget() << " has been robotomized successfully!" << std::endl;
 		else

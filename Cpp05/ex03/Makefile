@@ -23,7 +23,8 @@ CC		= c++
 
 CFLAG	= -Wall -Wextra -Werror -std=c++98
 
-SANI	= -fsanitize=address -g3 -Wconversion -Wsign-conversion
+SANI	= 
+#-fsanitize=address -g3 -Wconversion -Wsign-conversion
 
 RM		= rm -f
 

@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/12 07:21:59 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 19:49:42 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ Form::Form(std::string name, int grade, std::string target, int execGrade) : nam
 #ifdef DEBUG
 	std::cout << "Form Default constructor called" << std::endl;
 #endif
-	if (grade > 150)
+	if (grade > 150 || execGrade > 150)
 		throw (Form::GradeTooLowException("Exception: grade is too low to instantiate"));
-	else if (grade < 1)
+	else if (grade < 1 || execGrade < 1)
 		throw (Form::GradeTooHighException("Exception: grade is too high to instantiate"));
 }
 
@@ -55,9 +55,8 @@ Form &Form::operator=(const Form &other)
 
 std::ostream &operator<<(std::ostream &os, const Form &rhs)
 {
-	return (os << rhs.getName() << ", form grade " << rhs.getGrade() << ", is signed " << rhs.getIsSigned());
+	return (os << rhs.getName() << ", form ; grade required to execute " << rhs.getExecGrade() << ", grade required to sign " << rhs.getGrade() << ", is signed " << rhs.getIsSigned());
 }
-
 // Exception classes
 
 Form::GradeTooLowException::~GradeTooLowException() throw() {}

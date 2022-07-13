@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/12 07:51:13 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/13 20:27:04 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,15 @@ std::string	Bureaucrat::getName(void) const
 	return (this->name);
 }
 
+void	Bureaucrat::setGrade(int grade)
+{
+	if (grade > 150)
+		throw (Bureaucrat::GradeTooLowException());
+	else if (grade < 1)
+		throw (Bureaucrat::GradeTooHighException());
+	this->grade = grade;
+}
+
 void	Bureaucrat::downGrade()
 {
 	this->grade++;
@@ -118,14 +127,11 @@ void	Bureaucrat::executeForm(Form const &form)
 {
 	try
 	{
-//		const Bureaucrat	tmp("Jean", 1);
 		form.execute(*this);
-		
 		std::cout << this->name << " executed " << form.getName() << std::endl;
 	}
 	catch (std::exception &e)
 	{
-	
 		std::cout << this->name << " couldn't execute " << form.getName() << " because " << e.what() << std::endl;
 	}
 }
