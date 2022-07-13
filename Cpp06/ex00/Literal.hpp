@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <limits>
+#include <math>
 
 class Literal
 {
@@ -22,6 +24,21 @@ class Literal
 		float	toFloat() const;
 		double	toDouble() const;
 		char	toChar() const;
+
+
+	class	Exception : public std::exception
+	{
+		private:
+			std::string	_msg;
+
+		public:
+			const char	*what() const throw ();
+			~Exception() throw();
+			Exception(std::string msg);
+	};
+
+
 };
 
+std::ostream &operator<<(std::ostream &os, const Literal &rhs);
 #endif

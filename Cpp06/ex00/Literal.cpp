@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/13 06:53:59 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/13 09:54:45 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ Literal::~Literal()
 Literal::Literal(long double raw, std::string raw2) : _raw(raw), _raw2(raw2)
 {
 	std::cout << "Literal Default constructor called" << std::endl;
-		std::cout << "isNan " << isNan(raw2) << std::endl;
+	std::cout << "isNan " << isNan(raw2) << std::endl;
 }
 
 Literal::Literal(const Literal &other)
@@ -121,6 +121,60 @@ double	Literal::toDouble() const
 
 char	Literal::toChar() const
 {
+	if (_raw < std::numeric_limits<char>::min() || _raw > std::numeric_limits<char>::max() )
+		throw Literal::Exception("Exception: limits");
 	return (static_cast<char>(_raw));
+
 }
+Literal::Exception::~Exception() throw() {}
+
+Literal::Exception::Exception(std::string msg) : std::exception(), _msg(msg)
+{
+}
+
+const char	*Literal::Exception::what() const throw ()
+{
+	const char	*s = &_msg[0];
+	return (s);
+}
+// ===================================================================================================
+std::ostream &operator<<(std::ostream &os, const Literal &rhs)
+{
+	// CHAR ======
+	try
+	{
+		os << "char: ";
+		if (rhs.toChar() >= 32 && rhs.toChar() <= 127)
+			os << "'" << rhs.toChar() << "'" << std::endl;
+		else if (!isNan(rhs.getRawStr()))
+			os << "Non displayable" << std::endl;
+		else
+			os << "impossible" << std::endl;
+	}
+	catch (std::exception &e)
+	{
+		os << "impossible" << std::endl;
+	}
+	// INT ======
+	os << "int: ";
+	if (!isNan(rhs.getRawStr()))
+	{
+		os << rhs.toInt() << std::endl;
+	}
+	else
+		os << "impossible" << std::endl;
+	// FLOAT =======
+	os << "float: ";
+	if (!isNan(rhs.getRawStr()))
+	{
+		os << rhs.toFloat();
+		if (rhs.toFloat() / 1 == rhs.toFloat())
+			os << ".0";
+		os << "f" << std::endl;
+	}
+
+	os << "double: " << rhs.toDouble() << std::endl;
+	return (os);
+}
+
 //		std::cout << << std::endl;
