@@ -17,7 +17,7 @@ class Array
 		Array(const Array &rhs);
 		Array &operator = (const Array &rhs);
 
-		int	getSize() const;
+		int	size() const;
 		T	&operator [] (int position) const;
 
 
@@ -86,7 +86,7 @@ Array<T> &Array<T>::operator=(const Array<T> &other)
 
 
 template <typename T>
-int	Array<T>::getSize() const
+int	Array<T>::size() const
 {
 	return (_size);
 }
@@ -103,7 +103,7 @@ T &Array<T>::operator [] (int position) const
 	template <typename T>
 std::ostream &operator<<(std::ostream &os, const Array<T> &rhs)
 {
-	const int	size = rhs.getSize();
+	const int	size = rhs.size();
 	int	i = 0;
 	os << "[";
 	while (i < size)
