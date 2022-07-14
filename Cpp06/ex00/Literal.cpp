@@ -6,12 +6,13 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/14 01:29:07 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 04:53:10 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Literal.hpp"
 
+//		std::cout << << std::endl;
 static bool	ft_isdigit(char c)
 {
 	if (c >= '0' && c <= '9')
@@ -24,6 +25,16 @@ static bool	ft_isprintable(char c)
 	if (c >= 20 && c <= 127)
 		return (1);
 	return (0);
+}
+
+static bool	isInf(std::string s)
+{
+	if (s == "-inff" || s == "+inff")
+		return (1);
+	if (s == "-inf" || s == "+inf")
+		return (1);
+	return (0);
+
 }
 
 static int	getAscii(std::string _raw2)
@@ -88,7 +99,7 @@ static bool	isNan(std::string _raw2)
 		return (0);
 	return (1);
 }
-//		std::cout << << std::endl;
+
 // Orthodox canonical form ============================================================
 Literal::~Literal()
 {
@@ -100,7 +111,6 @@ Literal::Literal(long double raw, std::string raw2) : _raw(raw), _raw2(raw2)
 	int	ascii = getAscii(_raw2);
 	if (ascii >= 20 && ascii <= 127)
 	{
-		//	os << "'" << (char)ascii << "'" << std::endl;
 		setRaw(ascii);
 	}
 }
@@ -139,7 +149,6 @@ std::string	Literal::getRawStr(void) const
 
 // ===================================================================================================
 
-
 int	Literal::toInt() const
 {
 	if (!(_raw >= std::numeric_limits<int>::min() && _raw <= std::numeric_limits<int>::max()))
@@ -155,6 +164,8 @@ float	Literal::toFloat() const
 
 double	Literal::toDouble() const
 {
+	if (!(_raw >= std::numeric_limits<double>::min() && _raw <= std::numeric_limits<double>::max()))
+		throw Literal::Exception("Exception: limits");
 	return (static_cast<double>(_raw));
 }
 
@@ -162,10 +173,11 @@ char	Literal::toChar() const
 {
 	if (_raw < CHAR_MIN || _raw > CHAR_MAX)
 		throw Literal::Exception("Exception: limits");
-	//	std::cout << "re : " << _raw << std::endl;
 	return (static_cast<char>(_raw));
 
 }
+
+// Exception class ============================================================================
 Literal::Exception::~Exception() throw() {}
 
 Literal::Exception::Exception(std::string msg) : std::exception(), _msg(msg)
@@ -178,15 +190,7 @@ const char	*Literal::Exception::what() const throw ()
 	return (s);
 }
 
-bool	isInf(std::string s)
-{
-	if (s == "-inff" || s == "+inff")
-		return (1);
-	if (s == "-inf" || s == "+inf")
-		return (1);
-	return (0);
 
-}
 // ===================================================================================================
 std::ostream &operator<<(std::ostream &os, const Literal &rhs)
 {
