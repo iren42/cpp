@@ -6,7 +6,7 @@
 /*   By: iren <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 13:22:25 by iren              #+#    #+#             */
-/*   Updated: 2022/07/14 18:56:29 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 19:29:53 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	main()
 	// TEST 3: access an element out of bounds
 	try
 	{
+		Array<float> fEmpty;
+		std::cout << BL << fEmpty << RT << std::endl;
 		Array<float> fArray(4);
 		fArray[0] = 1.0f;
 		std::cout << BL << fArray << RT << std::endl;

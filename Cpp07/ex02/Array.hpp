@@ -37,8 +37,7 @@ Array<T>::~Array()
 }
 
 	template <typename T>
-Array<T>::Array() : _elements(0), _size(0)
-
+Array<T>::Array() : _elements(new T[0]), _size(0)
 {
 	std::cout << "Array Default constructor called" << std::endl;
 }
