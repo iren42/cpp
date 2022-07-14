@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/14 04:53:10 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 05:39:50 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ static int	getAscii(std::string _raw2)
 	{
 		if (ft_isprintable(s[0]) && (s[0] > '9' || s[0] < '0'))
 		{
-			//			std::cout << "in getAscii(): " << ((int)s[0]) << std::endl;
+		#ifdef DEBUG
+			std::cout << "in getAscii(): " << ((int)s[0]) << std::endl;
+		#endif
 			return (static_cast<int>(s[0]));
 		}
 	}
@@ -62,13 +64,17 @@ static bool	isNan(std::string _raw2)
 
 	if (getAscii(_raw2))
 	{
-		//	std::cout << "here" << std::endl;
 		return (0);
 	}
 	i = 0;
 	dots = 0;
 	fs = 0;
 	isFSyntaxOK = 1;
+	if (_raw2.size() > 2)
+	{
+		if (s[0] == '-' || s[0] == '+')
+			i++;
+	}
 	while (s[i])
 	{
 		if (!ft_isdigit(s[i]) && s[i] != '.' && s[i] != 'f')
@@ -107,7 +113,9 @@ Literal::~Literal()
 
 Literal::Literal(long double raw, std::string raw2) : _raw(raw), _raw2(raw2)
 {
-	//	std::cout << "isNan " << isNan(raw2) << ", raw = " << raw << ", raw2 = " << raw2 << std::endl;
+#ifdef DEBUG
+	std::cout << "isNan " << isNan(raw2) << ", raw = " << raw << ", raw2 = " << raw2 << std::endl;
+#endif
 	int	ascii = getAscii(_raw2);
 	if (ascii >= 20 && ascii <= 127)
 	{
@@ -157,14 +165,17 @@ int	Literal::toInt() const
 }
 float	Literal::toFloat() const
 {
-	if (!(_raw >= std::numeric_limits<float>::min() && _raw <= std::numeric_limits<float>::max()) && _raw != 0.0)
+#ifdef DEBUG
+	std::cout << _raw << " >= " << std::numeric_limits<float>::min() << std::endl; 
+#endif
+	if (!(_raw >= -std::numeric_limits<float>::max() && _raw <= std::numeric_limits<float>::max()))
 		throw Literal::Exception("Exception: limits");
 	return (static_cast<float>(_raw));
 }
 
 double	Literal::toDouble() const
 {
-	if (!(_raw >= std::numeric_limits<double>::min() && _raw <= std::numeric_limits<double>::max()))
+	if (!(_raw >= -std::numeric_limits<double>::max() && _raw <= std::numeric_limits<double>::max()))
 		throw Literal::Exception("Exception: limits");
 	return (static_cast<double>(_raw));
 }
@@ -270,7 +281,7 @@ std::ostream &operator<<(std::ostream &os, const Literal &rhs)
 		}
 		else
 		{
-			os << "nan" << std::endl;
+			os << "nan" ;
 		}
 	}
 	catch (std::exception &e)
