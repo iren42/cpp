@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/14 02:31:59 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 05:49:06 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,8 @@ Data &Data::operator=(const Data &other)
 	return (*this);
 }
 
+void	Data::sing(void)
+{
+	std::cout << "Sha la~ la~ " << _num << std::endl;
 
+}

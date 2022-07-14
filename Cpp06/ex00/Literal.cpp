@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/14 05:39:50 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 06:05:40 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static bool	ft_isdigit(char c)
 
 static bool	ft_isprintable(char c)
 {
-	if (c >= 20 && c <= 127)
+	if (c >= 32 && c <= 127)
 		return (1);
 	return (0);
 }
@@ -46,7 +46,7 @@ static int	getAscii(std::string _raw2)
 		if (ft_isprintable(s[0]) && (s[0] > '9' || s[0] < '0'))
 		{
 		#ifdef DEBUG
-			std::cout << "in getAscii(): " << ((int)s[0]) << std::endl;
+			std::cout << "in getAscii(): " << static_cast<int>(s[0]) << std::endl;
 		#endif
 			return (static_cast<int>(s[0]));
 		}
@@ -117,7 +117,7 @@ Literal::Literal(long double raw, std::string raw2) : _raw(raw), _raw2(raw2)
 	std::cout << "isNan " << isNan(raw2) << ", raw = " << raw << ", raw2 = " << raw2 << std::endl;
 #endif
 	int	ascii = getAscii(_raw2);
-	if (ascii >= 20 && ascii <= 127)
+	if (ascii >= 32 && ascii <= 127)
 	{
 		setRaw(ascii);
 	}
@@ -212,7 +212,7 @@ std::ostream &operator<<(std::ostream &os, const Literal &rhs)
 	{
 		os << "char: ";
 
-		if (rhs.toChar() >= 20 && rhs.toChar() <= 127)
+		if (rhs.toChar() >= 32 && rhs.toChar() <= 127)
 			os << "'" << rhs.toChar() << "'" << std::endl;
 		else if (!isNan(rawStr))
 			os << "Non displayable" << std::endl;

@@ -16,7 +16,7 @@ class Data
 		Data(const Data &other);
 		Data &operator = (const Data &other);
 
-
+		void	sing(void);
 };
 
 #endif

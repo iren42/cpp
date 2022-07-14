@@ -6,7 +6,7 @@
 /*   By: iren <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 02:16:35 by iren              #+#    #+#             */
-/*   Updated: 2022/07/14 02:39:57 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/14 05:57:18 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,15 @@ int	main()
 	uintptr_t	tmp = serialize(d);
 	Data *newD = deserialize(tmp);
 
-	std::cout << d << std::endl;
-	std::cout << tmp << std::endl;
-	std::cout << newD << std::endl;
+	std::cout << "uintptr_t value = " << tmp << std::endl;
+	std::cout << "initial Data* : " << d << std::endl;
+	std::cout << "new Data* : " << newD << std::endl;
+	std::cout << "new Data* calls its member function : " << std::flush;
+	newD->sing();
+	std::cout << std::endl;
+	std::cout << "old Data* calls its member function too : " << std::flush;
+	d->sing();
+	std::cout << "Final data struct is indeed usable" << std::endl;
 
 	delete d;
 //	std::cout << << std::endl;
