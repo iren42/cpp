@@ -1,7 +1,7 @@
 NAME	= ex01
 
 HEADER	=	iter.hpp \
-		
+#			../Awesome.hpp
 
 
 SRC		=	main.cpp

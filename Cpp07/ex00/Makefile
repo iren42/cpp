@@ -1,7 +1,7 @@
 NAME	= ex00
 
 HEADER	=	whatever.hpp \
-			../Awesome.hpp
+#			../Awesome.hpp
 		
 
 
