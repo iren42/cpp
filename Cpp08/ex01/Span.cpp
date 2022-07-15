@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:27:46 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/15 03:53:18 by iren             ###   ########.fr       */
+/*   Updated: 2022/07/15 05:35:31 by iren             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,13 @@ int	Span::longestSpan()
 		throw (Span::CustomException("size too low"));
 	std::sort(_v.begin(), _v.end());
 	return (_v.at(_v.size() - 1) - _v.at(0));
+}
+
+void Span::range(std::vector<int>::iterator begin, std::vector<int>::iterator end)
+{
+	if (std::distance(_v.begin(), _v.end()) + std::distance(begin, end) > _N)
+		throw (Span::CustomException("N numbers already in stock"));
+	_v.insert(_v.end(), begin, end);
 }
 
 void	Span::display()

@@ -19,12 +19,13 @@ class Span
 		Span(const Span &other);
 		Span &operator = (const Span &other);
 
-		void	addNumber(int num);
-		int	shortestSpan();
-		int	longestSpan();
-		void	display() ;
-		std::vector<int> getVec();
-		void setVec(std::vector<int> v);
+		void				addNumber(int num);
+		std::vector<int>	getVec();
+		void 				setVec(std::vector<int> v);
+		int					shortestSpan();
+		int					longestSpan();
+		void				range(std::vector<int>::iterator begin, std::vector<int>::iterator end);
+		void				display();
 
 // Exception classes
 		class	CustomException : public std::exception
