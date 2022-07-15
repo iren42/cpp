@@ -6,11 +6,20 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 07:51:43 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/15 08:37:49 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/15 11:08:50 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "MutantStack.hpp"
+
+void displayStack(std::stack<int> s)
+{
+	while(!s.empty()) {
+		std::cout<< s.top()<<" ";
+		s.pop();
+	}
+	std::cout << std::endl;
+}
 
 int	main()
 {
@@ -34,6 +43,17 @@ int	main()
 		std::cout << *it << std::endl;
 		++it;
 	}
+	std::cout << std::endl;	
+	MutantStack<int>::reverse_iterator rit = mstack.rbegin();
+	MutantStack<int>::reverse_iterator rite = mstack.rend();
+	while (rit != rite)
+	{
+		std::cout << *rit << std::endl;
+		++rit;
+	}
+	
+	std::cout << std::endl;	
 	std::stack<int> s(mstack);
+	displayStack(s);
 	return (0);
 }
