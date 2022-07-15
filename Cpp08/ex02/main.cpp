@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 07:51:43 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/15 11:08:50 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/15 12:33:43 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void displayStack(std::stack<int> s)
 
 int	main()
 {
+	// TEST 1: test from subject
+	std::cout << "TEST 1" << std::endl;
 	MutantStack<int> mstack;
 	mstack.push(5);
 
@@ -38,22 +40,90 @@ int	main()
 	MutantStack<int>::iterator ite = mstack.end();
 	++it;
 	--it;
+	std::cout << "display mstack" << std::endl;
 	while (it != ite)
 	{
 		std::cout << *it << std::endl;
 		++it;
 	}
 	std::cout << std::endl;	
-	MutantStack<int>::reverse_iterator rit = mstack.rbegin();
-	MutantStack<int>::reverse_iterator rite = mstack.rend();
-	while (rit != rite)
+	// TEST 2: testing reverse_iterator
 	{
-		std::cout << *rit << std::endl;
-		++rit;
+		std::cout << "TEST 2" << std::endl;
+		MutantStack<int>::reverse_iterator rit = mstack.rbegin();
+		MutantStack<int>::reverse_iterator rite = mstack.rend();
+		std::cout << "display mstack in reverse order with reverse iterator" << std::endl;
+		while (rit != rite)
+		{
+			std::cout << *rit << std::endl;
+			++rit;
+		}
+		std::cout << std::endl;	
 	}
-	
-	std::cout << std::endl;	
-	std::stack<int> s(mstack);
-	displayStack(s);
+	// TEST 3 : copy assign
+	{
+		std::cout << "TEST 3" << std::endl;
+		MutantStack<int> m;
+		m = mstack;
+		MutantStack<int>::iterator t3 = m.begin();
+		MutantStack<int>::iterator te3 = m.end();
+		std::cout << "display the copy of mstack" << std::endl;
+		while (t3 != te3)
+		{
+			std::cout << *t3 << std::endl;
+			++t3;
+		}
+		m.pop();
+		m.pop();
+		m.pop();
+		t3 = m.begin();
+		te3 = m.end();
+		std::cout << "display copy after multiple calls to pop()" << std::endl;
+		while (t3 != te3)
+		{
+			std::cout << *t3 << std::endl;
+			++t3;
+		}
+	}
+	std::cout << "redisplay mstack after the copy is deleted" << std::endl;
+	it = mstack.begin();
+	ite = mstack.end();
+	while (it != ite)
+	{
+		std::cout << *it << std::endl;
+		++it;
+	}
+	// TEST 4 : copy constructor
+	{
+		std::cout << "TEST 4" << std::endl;
+		MutantStack<int> m(mstack);
+		MutantStack<int>::iterator t3 = m.begin();
+		MutantStack<int>::iterator te3 = m.end();
+		std::cout << "display the copy of mstack" << std::endl;
+		while (t3 != te3)
+		{
+			std::cout << *t3 << std::endl;
+			++t3;
+		}
+		m.push(41);
+		m.push(42);
+		m.push(43);
+		t3 = m.begin();
+		te3 = m.end();
+		std::cout << "display the copy after multiple calls to push()" << std::endl;
+		while (t3 != te3)
+		{
+			std::cout << *t3 << std::endl;
+			++t3;
+		}
+		std::cout << "redisplay mstack after the copy is deleted" << std::endl;
+		it = mstack.begin();
+		ite = mstack.end();
+		while (it != ite)
+		{
+			std::cout << *it << std::endl;
+			++it;
+		}
+	}
 	return (0);
 }
