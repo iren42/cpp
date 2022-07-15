@@ -37,8 +37,8 @@ catch(std::exception &e)
 	std::cout << GR << s.longestSpan() <<  RT << std::endl;
 	}
 
-	// TEST 3: deep copy
-	std::cout << RED << " TEST 3: deep copy ********************" << RT << std::endl;
+	// TEST 3: copy
+	std::cout << RED << " TEST 3: copy ********************" << RT << std::endl;
 	{
 		Span s = Span(10);
 		s.setVec(range_add_with_rand(10));
