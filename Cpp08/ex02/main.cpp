@@ -6,7 +6,7 @@
 /*   By: isabelle <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 07:51:43 by isabelle          #+#    #+#             */
-/*   Updated: 2022/07/15 12:33:43 by isabelle         ###   ########.fr       */
+/*   Updated: 2022/07/15 12:38:51 by isabelle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main()
 	// TEST 1: test from subject
 	std::cout << "TEST 1" << std::endl;
 	MutantStack<int> mstack;
+	std::cout << "is MutantStack empty ? " << mstack.empty() << std::endl;
 	mstack.push(5);
 
 	std::cout << mstack.top() << std::endl;
@@ -35,7 +36,7 @@ int	main()
 	mstack.push(5);
 	mstack.push(737);
 	mstack.push(0);
-
+	std::cout << "is MutantStack empty ? " << mstack.empty() << ", size = " << mstack.size() << std::endl;
 	MutantStack<int>::iterator it = mstack.begin();
 	MutantStack<int>::iterator ite = mstack.end();
 	++it;
