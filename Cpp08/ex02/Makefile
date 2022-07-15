@@ -12,7 +12,7 @@ OBJ	= $(SRC:.cpp=.o)
 
 CC		= c++
 
-CFLAG	= -Wall -Wextra -Werror -std=c++98
+CFLAG	= -Wall -Wextra -Werror -std=c++98 -g3
 
 SANI	= 
 #-fsanitize=address -g3 -Wconversion -Wsign-conversion
