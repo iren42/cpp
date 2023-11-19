@@ -5,24 +5,39 @@
 # include <iostream>
 # include <string>
 # include <fstream>
+
 # include <map>
-# include <utility>
-# include <stdlib.h>
+# include <utility> // std::make_pair()
+# include <stdlib.h> // atof
+# include <sstream> // std::istringstream
+# include <ctime> // mktime() localtime()
 
 /* path to the database file */
-# define BC_FILE "./data.csv"
+# define DATABASE "./data.csv"
+
 /* error messages */
-//# define DEBUG
-# define ERR_OPEN "could not open file"
+# define ERR_OPEN "Error: could not open file."
+# define ERR_STREAM "Error: failed to read file."
+# define ERR_NOT_POS "Error: not a positive number."
+# define ERR_TOO_BIG "Error: too large a number."
+# define ERR_DATE(date) "Error: bad input => " + date 
 
 # define MAP std::map<std::string, std::string>
 # define BUFSIZE 40
 
 
+void	print(const std::string& reason);
+bool	parse_date(const std::string&, int&, int&, int&);
+bool	parse_value(const std::string&);
+bool	parse_filename(const char*);
+
 class BitcoinExchange
 {
 	private:
 		MAP	_db;
+		void	fill_container(const char *);
+		void	exchange_rate(const char*);
+		bool	parse(const std::string&, const std::string&);
 
 	public:
 		~BitcoinExchange();
@@ -30,12 +45,9 @@ class BitcoinExchange
 		BitcoinExchange(const BitcoinExchange &other);
 		BitcoinExchange &operator = (const BitcoinExchange &other);
 
-		bool	init_container(std::ifstream&);
-		void	fill_container(char *);
+		bool	read_db();
 		void	print_container();
-		MAP::iterator	find_by_date(std::string);
-		void	calc(char*);
-		void	print_result(char*);
+		void	calc(const char*);
 
 };
 
