@@ -17,6 +17,7 @@
 class RPN
 {
 	private:
+		std::stack<int>	_stack;
 		static bool	is_a_num(std::string &word);
 		static bool	is_zero(std::string &s);
 

@@ -3,34 +3,51 @@
 //		std::cout << << std::endl;
 RPN::~RPN()
 {
-	std::cout << "RPN Destructor called" << std::endl;
 }
 
 RPN::RPN()
 {
-	std::cout << "RPN Default constructor called" << std::endl;
 
 }
 
 
 RPN::RPN(const RPN &other)
 {
-	std::cout << "RPN Copy constructor called" << std::endl;
 	(*this) = other;
 }
 
 RPN &RPN::operator=(const RPN &other)
 {
-	std::cout << "RPN Copy assignment constructor called" << std::endl;
+	if (this != &other)
+	{
+		_stack = other._stack;
+	}
 	return (*this);
 }
 
-int	RPN::calc(const char* s)
+/* this function considers that param s should only have TOKENS,
+   digits or spaces as characters */
+bool	RPN::parse(const char* s)
 {
-	return (0);
+	int		i;
+	char	*p = 0;
+	std::string	t(TOKENS);
+	t.append("0123456789 ");
+	char	*auth_char= new char[t.size() + 1];
+
+	strcpy(auth_char, t.c_str());
+	i = 0;
+	while (s[i])
+	{
+		p = strchr(auth_char, s[i]);
+		if (p == 0)
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
-bool	RPN::parse(const char *s)
+int	RPN::calc(const char *s)
 {
 	std::stringstream	ss(s);
 	std::string	word;
@@ -68,16 +85,18 @@ bool	RPN::parse(const char *s)
 			throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 		}
 		else
-			std::cout << word << std::endl;
+			std::cout << word << " is a number!!" << std::endl;
 	}
 	delete tokens;
-	return (true);
+	return (0);
 }
 
 bool	RPN::is_zero(std::string &s)
 {
 	std::string::iterator	it = s.begin();
 
+	if (s.at(0) == '-' && s.size() > 1)
+		it++;
 	while (it != s.end())
 	{
 		if ((*it) != '0')
@@ -91,9 +110,8 @@ bool	RPN::is_a_num(std::string &word)
 {
 	int	num = atoi(word.c_str());
 
-	std::cout << num << " num, strcmp: " << strcmp(word.c_str(), "0") << std::endl;
+	/* std::cout << num << " num, is_zero: " << is_zero(word) << std::endl; */
 	if (num == 0 && is_zero(word) == false)
 		return (false);
 	return (true);
 }
-
