@@ -87,10 +87,11 @@ int	RPN::calc(const char *s)
 				std::cout << "token found: " << word[0] << std::endl;
 				if (_stack.size() >= 2)
 				{
-					a = _stack.top();
-					_stack.pop();
 					b = _stack.top();
 					_stack.pop();
+					a = _stack.top();
+					_stack.pop();
+					std::cout << a << "," << b << " = a,b" << std::endl;
 					func = get_func(word);
 					if (func)
 						_res = func(a, b);
@@ -190,7 +191,9 @@ int	substract(int a, int b)
 int	divide(int a, int b)
 {
 	if (b == 0)
+	{
 		throw std::runtime_error(ERR_DIV_BY_ZERO);
+	}
 	return (a / b);
 }
 
