@@ -4,17 +4,16 @@
 RPN::~RPN()
 {
 	print_stack();
-	delete _tokens;
+	/* delete _tokens; */
 }
 
-RPN::RPN() : _res(0)
+RPN::RPN() : _res(0), _tokens(TOKENS)
 {
 	/* init _tokens */
-	std::string	buf(TOKENS);
-	_tokens = new char[buf.size() + 1];
-	memset(_tokens, 0, buf.size() + 1);
-	strncpy(_tokens, buf.c_str(), buf.size());
-	/* init operation functions */
+	/* std::string	buf(TOKENS); */
+	/* _tokens = new char[buf.size() + 1]; */
+	/* memset(_tokens, 0, buf.size() + 1); */
+	/* strncpy(_tokens, buf.c_str(), buf.size()); */
 }
 
 
@@ -28,11 +27,12 @@ RPN &RPN::operator=(const RPN &other)
 	if (this != &other)
 	{
 		_stack = other._stack;
-		delete _tokens;
-		int i = sizeof(other._tokens) / sizeof(other._tokens[0]);
-		std::cout << i << std::endl;
-		_tokens = new char[i + 1];
-		strncpy(_tokens, other._tokens, i + 1);
+		_tokens = other._tokens;
+		/* delete _tokens; */
+		/* int i = sizeof(other._tokens) / sizeof(other._tokens[0]); */
+		/* std::cout << i << std::endl; */
+		/* _tokens = new char[i + 1]; */
+		/* strncpy(_tokens, other._tokens, i + 1); */
 
 	}
 	return (*this);
@@ -43,24 +43,18 @@ RPN &RPN::operator=(const RPN &other)
 bool	RPN::parse(const char* s)
 {
 	int		i;
-	char	*p = 0;
 	std::string	t(TOKENS);
 	t.append("0123456789 ");
-	char	*auth_char= new char[t.size() + 1];
+	size_t	pos; 
 
-	strcpy(auth_char, t.c_str());
 	i = 0;
 	while (s[i])
 	{
-		p = strchr(auth_char, s[i]); // strchr do not work with a const char array
-		if (p == 0)
-		{
-			delete auth_char;
+		pos = t.find(s[i]);
+		if (pos == std::string::npos)
 			return (false);
-		}
 		i++;
 	}
-	delete auth_char;
 	return (true);
 }
 
@@ -68,21 +62,19 @@ int	RPN::calc(const char *s)
 {
 	std::stringstream	ss(s);
 	std::string	word;
-	char	*p = 0;
+	size_t	pos;
 	int	a;
 	int	b;
 	int	(*func)(int, int) = 0;
-
-	/* necessary to use strchr() */
 
 	while (ss >> word)
 	{
 		/* parse tokens */
 		if (word.size() == 1 && is_a_num(word) == false)
 		{
-			p = strchr(_tokens, word[0]);
+			pos = _tokens.find(word);
 			/* is it a token? */
-			if (p != 0)
+			if (pos != std::string::npos)
 			{
 				std::cout << "token found: " << word[0] << std::endl;
 				if (_stack.size() > 0)
@@ -120,7 +112,7 @@ int	RPN::calc(const char *s)
 		}
 		else if (word.size() > 1 && is_a_num(word) == false)
 		{
-			std::cout << word << " is neither a num or a token" << std::endl;
+			/* std::cout << word << " is neither a num or a token" << std::endl; */
 			throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 		}
 		else
@@ -148,7 +140,7 @@ bool	RPN::is_zero(std::string &s)
 	return (true);
 }
 
-bool	RPN::is_a_num(std::string &word)
+bool	RPN::is_a_num(std::string& word)
 {
 	int	num = atoi(word.c_str());
 
@@ -158,7 +150,7 @@ bool	RPN::is_a_num(std::string &word)
 	return (true);
 }
 
-int	ft_atoi(std::string s)
+int	ft_atoi(std::string& s)
 {
 	char	*buf= new char[s.size() + 1];
 	strcpy(buf, s.c_str());

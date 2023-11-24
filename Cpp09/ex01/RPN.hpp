@@ -21,18 +21,18 @@ int	add(int a, int b);
 int	substract(int a, int b);
 int	divide(int a, int b);
 
+
 int	(*get_func(std::string))(int, int);
-int	ft_atoi(std::string);
+int	ft_atoi(std::string&);
 
 class RPN
 {
 	private:
 		std::stack<int>	_stack;
-		char*	_tokens;
-		int		_res;
-		static bool	is_a_num(std::string &word);
-		static bool	is_zero(std::string &s);
-		void	init_op();
+		std::string		_tokens;
+		int				_res;
+		static bool	is_a_num(std::string& word);
+		static bool	is_zero(std::string& s);
 
 
 	public:
@@ -42,8 +42,8 @@ class RPN
 		RPN &operator = (const RPN &other);
 
 		static bool parse(const char *);
-		int	calc(const char*);
-		void	print_stack();
+		int			calc(const char*);
+		void		print_stack();
 };
 
 #endif
