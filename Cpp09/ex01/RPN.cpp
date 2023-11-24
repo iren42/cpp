@@ -85,12 +85,19 @@ int	RPN::calc(const char *s)
 			if (p != 0)
 			{
 				std::cout << "token found: " << word[0] << std::endl;
-				if (_stack.size() >= 2)
+				if (_stack.size() > 0)
 				{
 					b = _stack.top();
 					_stack.pop();
-					a = _stack.top();
-					_stack.pop();
+					if (_stack.empty() == false)
+					{
+						a = _stack.top();
+						_stack.pop();
+					}
+					else
+					{
+						a= _res;
+					}
 					std::cout << a << "," << b << " = a,b" << std::endl;
 					func = get_func(word);
 					if (func)
