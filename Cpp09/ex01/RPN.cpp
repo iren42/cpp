@@ -53,6 +53,7 @@ int	RPN::calc(const char *s)
 	int					a;
 	int					b;
 	int	(*func)(int, int) = 0;
+	int	res = 0;
 
 	while (ss >> word)
 	{
@@ -63,33 +64,31 @@ int	RPN::calc(const char *s)
 			/* is it a token? */
 			if (pos != std::string::npos)
 			{
-				/* std::cout << "token found: " << word[0] << std::endl; */
-				if (_stack.size() > 0)
+				std::cout << "token found: " << word[0] << std::endl;
+				print_stack();
+				if (_stack.size() > 1)
 				{
 					b = _stack.top();
 					_stack.pop();
-					if (_stack.empty() == false)
-					{
-						a = _stack.top();
-						_stack.pop();
-					}
-					else
-					{
-						a= _res;
-					}
-					/* std::cout << a << "," << b << " = a,b" << std::endl; */
+					a = _stack.top();
+					_stack.pop();
+					std::cout << a << "," << b << " = a,b" << std::endl;
 					func = get_func(word);
 					if (func)
-						_res = func(a, b);
+					{
+						res = func(a, b);
+						_stack.push(res);
+					}
 					else
 					{
-						/* std::cout << "func pointer was not found " << std::endl; */
+						std::cout << "func pointer was not found " << std::endl;
 						throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 					}
-					/* std::cout << "func pointer: " << _res << std::endl; */
+					std::cout << "func pointer: " << _stack.top() << std::endl;
 				}
 				else
 				{
+					std::cout << "stack is empty, res=" << res << std::endl;
 					throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 				}
 			}
@@ -98,24 +97,24 @@ int	RPN::calc(const char *s)
 				/* is it a character? */
 				if (is_a_num(word) == false)
 				{
-					/* std::cout << word << " is NOT a num" << std::endl; */
+					std::cout << word << " is NOT a num" << std::endl;
 					throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 				}
 			}
 		}
 		else if (word.size() > 1 && is_a_num(word) == false)
 		{
-			/* std::cout << word << " is neither a num or a token" << std::endl; */
+			std::cout << word << " is neither a num or a token" << std::endl;
 			throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 		}
 		else
 		{
-			/* std::cout << word << " is a number!!" << std::endl; */
+			std::cout << word << " is a number!!" << std::endl;
 			_stack.push(ft_atoi(word));
 		}
 	}
-	/* std::cout << " res = " << _res << std::endl; */
-	return (_res);
+	std::cout << " res = " << _stack.top() << std::endl;
+	return (res);
 }
 
 bool	RPN::is_zero(std::string &s)
