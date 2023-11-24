@@ -11,8 +11,7 @@ OBJ	= $(SRC:.cpp=.o)
 
 CC		= c++
 
-CFLAG	= -std=c++98 
-#-Wall -Wextra -Werror 
+CFLAG	= -std=c++98 -Wall -Wextra -Werror 
 
 SANI	=
 #-fsanitize=address -g3 -Wconversion -Wsign-conversion

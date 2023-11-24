@@ -3,19 +3,12 @@
 //		std::cout << << std::endl;
 RPN::~RPN()
 {
-	print_stack();
-	/* delete _tokens; */
+	/* print_stack(); */
 }
 
 RPN::RPN() : _res(0), _tokens(TOKENS)
 {
-	/* init _tokens */
-	/* std::string	buf(TOKENS); */
-	/* _tokens = new char[buf.size() + 1]; */
-	/* memset(_tokens, 0, buf.size() + 1); */
-	/* strncpy(_tokens, buf.c_str(), buf.size()); */
 }
-
 
 RPN::RPN(const RPN &other)
 {
@@ -28,12 +21,6 @@ RPN &RPN::operator=(const RPN &other)
 	{
 		_stack = other._stack;
 		_tokens = other._tokens;
-		/* delete _tokens; */
-		/* int i = sizeof(other._tokens) / sizeof(other._tokens[0]); */
-		/* std::cout << i << std::endl; */
-		/* _tokens = new char[i + 1]; */
-		/* strncpy(_tokens, other._tokens, i + 1); */
-
 	}
 	return (*this);
 }
@@ -61,10 +48,10 @@ bool	RPN::parse(const char* s)
 int	RPN::calc(const char *s)
 {
 	std::stringstream	ss(s);
-	std::string	word;
-	size_t	pos;
-	int	a;
-	int	b;
+	std::string			word;
+	size_t				pos;
+	int					a;
+	int					b;
 	int	(*func)(int, int) = 0;
 
 	while (ss >> word)
@@ -76,7 +63,7 @@ int	RPN::calc(const char *s)
 			/* is it a token? */
 			if (pos != std::string::npos)
 			{
-				std::cout << "token found: " << word[0] << std::endl;
+				/* std::cout << "token found: " << word[0] << std::endl; */
 				if (_stack.size() > 0)
 				{
 					b = _stack.top();
@@ -90,14 +77,20 @@ int	RPN::calc(const char *s)
 					{
 						a= _res;
 					}
-					std::cout << a << "," << b << " = a,b" << std::endl;
+					/* std::cout << a << "," << b << " = a,b" << std::endl; */
 					func = get_func(word);
 					if (func)
 						_res = func(a, b);
 					else
-						std::cout << "func pointer was not found " << std::endl;
-
-					std::cout << "func pointer: " << _res << std::endl;
+					{
+						/* std::cout << "func pointer was not found " << std::endl; */
+						throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
+					}
+					/* std::cout << "func pointer: " << _res << std::endl; */
+				}
+				else
+				{
+					throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 				}
 			}
 			else
@@ -105,7 +98,7 @@ int	RPN::calc(const char *s)
 				/* is it a character? */
 				if (is_a_num(word) == false)
 				{
-					std::cout << word << " is NOT a num" << std::endl;
+					/* std::cout << word << " is NOT a num" << std::endl; */
 					throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 				}
 			}
@@ -117,11 +110,11 @@ int	RPN::calc(const char *s)
 		}
 		else
 		{
-			std::cout << word << " is a number!!" << std::endl;
+			/* std::cout << word << " is a number!!" << std::endl; */
 			_stack.push(ft_atoi(word));
 		}
 	}
-	std::cout << " res = " << _res << std::endl;
+	/* std::cout << " res = " << _res << std::endl; */
 	return (_res);
 }
 
@@ -153,9 +146,9 @@ bool	RPN::is_a_num(std::string& word)
 int	ft_atoi(std::string& s)
 {
 	char	*buf= new char[s.size() + 1];
-	strcpy(buf, s.c_str());
+	strncpy(buf, s.c_str(), s.size() + 1);
 	int	n = (atoi(buf));
-	delete buf;
+	delete [] buf;
 	return (n);
 }
 
@@ -164,16 +157,15 @@ void	RPN::print_stack()
 	std::stack<int> buf = _stack;
 
 	int	value;
-	std::cout << "=====" << std::endl;
+	std::cout << "== PRINT STACK ===" << std::endl;
 	while (buf.empty() == false)
 	{
 		value = buf.top();
 		std::cout << value << std::endl;
 		buf.pop();
 	}
+	std::cout << "== END OF PRINT STACK ===" << std::endl;
 }
-
-
 
 int	multiply(int a, int b)
 {

@@ -13,7 +13,7 @@ int	main(int ac, char *av[])
 			if (RPN::parse(av[1]) == false)
 				throw std::runtime_error(ERR_NOT_A_RPN_EXPR);
 			RPN rpn;
-			rpn.calc(av[1]);
+			std::cout << rpn.calc(av[1]) << std::endl;
 		}
 	}
 	catch (const std::exception& e)
