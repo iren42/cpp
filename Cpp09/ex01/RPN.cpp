@@ -87,7 +87,7 @@ int	RPN::calc(const char *s)
 					}
 					else
 					{
-						std::cout << "func pointer was not found " << std::endl;
+						std::cout << "func pointer was not found" << std::endl;
 						throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 					}
 #ifdef DEBUG
@@ -96,7 +96,6 @@ int	RPN::calc(const char *s)
 				}
 				else
 				{
-					std::cout << "stack is empty, res=" << res << std::endl;
 					throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 				}
 			}
@@ -123,6 +122,8 @@ int	RPN::calc(const char *s)
 			_stack.push(ft_atoi(word));
 		}
 	}
+	if (_stack.size() != 1)
+			throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 #ifdef DEBUG
 	std::cout << "Result = " << _stack.top() << std::endl;
 #endif

@@ -16,7 +16,8 @@ ifeq ($(DEBUG), 1)
 	CFLAG += -DDEBUG
 endif
 
-SANI	= -fsanitize=address -g3 -Wconversion -Wsign-conversion
+SANI	= 
+#-fsanitize=address -g3 -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
