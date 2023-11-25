@@ -57,6 +57,9 @@ int	RPN::calc(const char *s)
 
 	while (ss >> word)
 	{
+#ifdef DEBUG
+		print_stack();
+#endif
 		/* parse tokens */
 		if (word.size() == 1 && is_a_num(word) == false)
 		{
@@ -64,15 +67,18 @@ int	RPN::calc(const char *s)
 			/* is it a token? */
 			if (pos != std::string::npos)
 			{
-				std::cout << "token found: " << word[0] << std::endl;
-				print_stack();
+#ifdef DEBUG
+				std::cout << "\ttoken found: " << word << std::endl;
+#endif
 				if (_stack.size() > 1)
 				{
 					b = _stack.top();
 					_stack.pop();
 					a = _stack.top();
 					_stack.pop();
-					std::cout << a << "," << b << " = a,b" << std::endl;
+#ifdef DEBUG
+					std::cout << "\t" << a << "," << b << " = a,b" << std::endl;
+#endif
 					func = get_func(word);
 					if (func)
 					{
@@ -84,7 +90,9 @@ int	RPN::calc(const char *s)
 						std::cout << "func pointer was not found " << std::endl;
 						throw std::runtime_error(ERR_NOT_A_RPN_EXPR);	
 					}
-					std::cout << "func pointer: " << _stack.top() << std::endl;
+#ifdef DEBUG
+					std::cout << "\tfunc pointer result = " << _stack.top() << std::endl;
+#endif
 				}
 				else
 				{
@@ -109,12 +117,16 @@ int	RPN::calc(const char *s)
 		}
 		else
 		{
-			std::cout << word << " is a number!!" << std::endl;
+#ifdef DEBUG
+			std::cout << "\t" << word << " is a number!!" << std::endl;
+#endif
 			_stack.push(ft_atoi(word));
 		}
 	}
-	std::cout << " res = " << _stack.top() << std::endl;
-	return (res);
+#ifdef DEBUG
+	std::cout << "Result = " << _stack.top() << std::endl;
+#endif
+	return (_stack.top());
 }
 
 bool	RPN::is_zero(std::string &s)
@@ -136,7 +148,6 @@ bool	RPN::is_a_num(std::string& word)
 {
 	int	num = atoi(word.c_str());
 
-	/* std::cout << num << " num, is_zero: " << is_zero(word) << std::endl; */
 	if (num == 0 && is_zero(word) == false)
 		return (false);
 	return (true);
