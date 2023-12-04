@@ -78,10 +78,10 @@ bool	PmergeMe::is_a_posi_num(std::string& word)
 	return (true && num >= 0);
 }
 
-void	PmergeMe::print_list()
+void	PmergeMe::print_list(std::list<int>& myList)
 {
 	std::cout << "l = { ";
-	for (int n : _l)
+	for (int n : myList)
 		std::cout << n << ", ";
 	std::cout << "};\n";
 }
@@ -96,6 +96,68 @@ void	PmergeMe::print_vector()
 
 void	PmergeMe::sort_list()
 {
+	// group the elements into n/2 pairs and sort each pair
+	int	size = _l.size();
+	int	i = 0;
+	std::list<int>::iterator iti = _l.begin();
+	std::list<int>::iterator itp = _l.begin();
 
+	itp++;
+	std::list<std::pair<int,int>> bigList;
+	while (i < size / 2)
+	{
+		if (*iti < *itp)
+		bigList.push_back(std::make_pair(*iti, *itp));
+		else
+		bigList.push_back(std::make_pair(*itp, *iti));
+		// increment to the next pair
+		i++;
+		iti++;
+		iti++;
+		itp++;
+		itp++;
+	}
+	// last element in a odd number of elements
+	if (size % 2)
+		int	last = *iti;
+	// recursively sort the n/2 larger elements from each pair
+	list_recursive_sort(bigList);
+}
+
+void	PmergeMe::list_recursive_sort(std::list<std::pair<int, int>>& l)
+{
+	if (larger_ele_are_sorted(l) == true)
+	return ;
+	
+}
+
+bool	PmergeMe::larger_ele_are_sorted(std::list<std::pair<int, int>>& l)
+{
+	std::list<std::pair<int, int>>::iterator	iti = l.begin();
+	std::list<std::pair<int, int>>::iterator	itp = l.begin();
+
+	itp++;
+	while (iti != l.end() && itp != l.end())
+	{
+		std::cout << (*iti).second << " " << (*itp).second << std::endl;
+		if ((*iti).second > (*itp).second)
+		{
+			std::cout << "Larger ele are not sorted" << std::endl;
+			return (false);
+		}
+		iti++;
+		iti++;
+		itp++;
+		itp++;
+	}
+	return (true);
+}
+
+void	PmergeMe::sort()
+{
+	print_list(_l);
+	sort_list();
+	/* sort_vector(); */
+	print_list(_l);
 
 }
