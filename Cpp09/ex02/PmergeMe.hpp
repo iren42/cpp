@@ -10,6 +10,8 @@
 # define ERR_ARG "Error: not enough arguments."
 # define ERR_INPUT "Error: input not valid."
 
+# define LIST std::list<std::pair<int, int>>
+
 class PmergeMe
 {
 	private:
@@ -22,8 +24,9 @@ class PmergeMe
 
 		void	sort_list();
 		void	sort_vector();
-void	list_recursive_sort(std::list<std::pair<int, int>>&);
-bool	larger_ele_are_sorted(std::list<std::pair<int, int>>&);
+void	merge_sort(LIST& list, int const begin, int const end);
+void	merge(LIST& list, int const left, int const mid, int const right);
+bool	larger_ele_are_sorted(LIST&);
 
 	public:
 		~PmergeMe();
@@ -34,6 +37,7 @@ bool	larger_ele_are_sorted(std::list<std::pair<int, int>>&);
 		static bool	parse(int, char**);
 
 		void	print_list(std::list<int>&);
+void	print_list_of_pairs(LIST& l);
 		void	print_vector();
 
 		void	sort();
