@@ -155,12 +155,25 @@ void PmergeMe::merge(std::list<std::pair<int,int>>& list, int const left, int co
 	int	i = 0;
 	int	j = 0;
 	LIST::iterator	it = list.begin();
+	while (i < left)
+	{
+		it++;
+		i++;
+	}
+	i = 0;
 	while (i < subListOne)
 	{
 		leftList.push_back(*it);
 		it++;
 		i++;
 	}
+	it = list.begin();
+	while (j < mid + 1)
+	{
+		it++;
+		j++;
+	}
+	j = 0;
 	while (j < subListTwo)
 	{
 		rightList.push_back(*it);
