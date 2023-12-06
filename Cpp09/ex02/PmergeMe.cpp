@@ -2,7 +2,6 @@
 
 PmergeMe::~PmergeMe()
 {
-	/* print_stack(); */
 }
 
 PmergeMe::PmergeMe(int ac, char **av)
@@ -12,7 +11,6 @@ PmergeMe::PmergeMe(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		/* std::cout << av[i] << std::endl; */
 		_l.push_back(atoi(av[i]));
 		_v.push_back(atoi(av[i]));
 		i++;
@@ -47,7 +45,6 @@ bool	PmergeMe::parse(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		/* std::cout << av[i] << std::endl; */
 		std::string buf(av[i]);
 		if (is_a_posi_num(buf) == false)
 			return (false);
@@ -137,143 +134,92 @@ void	PmergeMe::sort_list()
 	std::cout << "bigList size= " << bigList.size() << std::endl;
 	merge_sort(bigList, 0, bigList.size() - 1);
 }
+
+
+void	PmergeMe::copy_data_to_sublist(LIST &bigList, LIST& subList, 
+		int const pos, int const dataSize)
+{
+	int	i = 0;
+	LIST::iterator	it = bigList.begin();
+	// place the iterator it at the element bigList.at(pos)
+	while (i < pos)
+	{
+		it++;
+		i++;
+	}
+	i = 0;
+	while (i < dataSize)
+	{
+		subList.push_back(*it);
+		it++;
+		i++;
+	}
+}
+
 // Merges two sublists of list.
 // First sublist is arr[begin..mid]
 // Second sublist is arr[mid+1..end]
 void PmergeMe::merge(std::list<std::pair<int,int>>& list, int const left, int const mid,
 		int const right)
 {
-	int const subListOne = mid - left + 1;
-	int const subListTwo = right - mid;
+	int const leftListSize = mid - left + 1;
+	int const rightListSize = right - mid;
 	std::cout << "left="<<left << " , mid=" << mid << " , right= " << right << std::endl;
 
 	// Create temp lists
 	LIST	leftList;
 	LIST	rightList;
 
-	// Copy data to temp lists leftlist[] and rightlist[]
-	int	i = 0;
-	int	j = 0;
-	LIST::iterator	it = list.begin();
-	while (i < left)
-	{
-		it++;
-		i++;
-	}
-	i = 0;
-	while (i < subListOne)
-	{
-		leftList.push_back(*it);
-		it++;
-		i++;
-	}
-	it = list.begin();
-	while (j < mid + 1)
-	{
-		it++;
-		j++;
-	}
-	j = 0;
-	while (j < subListTwo)
-	{
-		rightList.push_back(*it);
-		it++;
-		j++;
-	}
-	std::cout << "Left list: " << std::flush;
-	print_list_of_pairs(leftList);
-	std::cout << "\nRight list: " << std::flush;
-	print_list_of_pairs(rightList);
+	// Copy data to temp lists leftlist and rightlist
+	copy_data_to_sublist(list, leftList, left, leftListSize);
+	copy_data_to_sublist(list, rightList, mid + 1, rightListSize);
 
-
-	LIST::iterator	itsl1 = leftList.begin();
-	LIST::iterator	itsl2 = rightList.begin();
+	LIST::iterator	it1 = leftList.begin();
+	LIST::iterator	it2 = rightList.begin();
 	LIST::iterator	itMergedList = list.begin();
-	int indexOfSublistOne = 0, indexOfSublistTwo = 0;
-	i = 0;
-			std::cout << "left= "<< i << "<" << left << std::endl;
+	// place the iterator itMergedList at the element list.at(left)
+	int	i = 0;
 	while (i < left)
 	{
 		i++;
 		itMergedList++;	
 	}
-		std::cout << "debug0 " << std::distance(list.begin(), itMergedList) <<  std::endl;
-	/* int indexOfMergedlist = left; */
-
 	// Merge the temp lists back into list[left..right]
-	while (indexOfSublistOne < subListOne
-			&& indexOfSublistTwo < subListTwo)
+	while (it1 != leftList.end() && it2 != rightList.end())
 	{
-		std::cout << "LOOPED" << std::endl;
-		std::cout << indexOfSublistOne << "<" << subListOne << " et "<< indexOfSublistTwo << "<" << subListTwo<< std::endl;
-		/* if (leftList[indexOfSublistOne] */
-		/* 		<= rightList[indexOfSublistTwo]) */
-		if ((*itsl1).second <= (*itsl2).second)
+		if ((*it1).second <= (*it2).second)
 		{
-			std::cout << (*itsl1).second << " <= " << (*itsl2).second << std::endl;
-		itMergedList = list.erase(itMergedList);
-			list.insert(itMergedList, *(itsl1));
-			itsl1++;
-			/* list[indexOfMergedlist] */
-			/* 	= leftlist[indexOfSublistOne]; */
-			indexOfSublistOne++;
-			std::cout << indexOfSublistOne << std::endl;
+			itMergedList = list.erase(itMergedList);
+			list.insert(itMergedList, *(it1));
+			it1++;
 		}
 		else
 		{
-		itMergedList = list.erase(itMergedList);
-			list.insert(itMergedList, *(itsl2));
-			itsl2++;
-			/* list[indexOfMergedlist] */
-			/* 	= rightlist[indexOfSublistTwo]; */
-			indexOfSublistTwo++;
+			itMergedList = list.erase(itMergedList);
+			list.insert(itMergedList, *(it2));
+			it2++;
 		}
-		/* indexOfMergedlist++; */
-		/* itMergedList++; */
 	}
-		std::cout << "debug1 " << std::distance(list.begin(), itMergedList) <<  std::endl;
-	print_list_of_pairs(list);
 
-	/* // Copy the remaining elements of */
-	/* // left[], if there are any */
-	/* while (indexOfSublistOne < sublistOne) { */
-	/* 	list[indexOfMergedlist] */
-	/* 		= leftlist[indexOfSublistOne]; */
-	/* 	indexOfSublistOne++; */
-	/* 	indexOfMergedlist++; */
-	/* } */
-	while (itsl1 != leftList.end())
+	// Copy the remaining elements of
+	// leftList, if there are any
+	while (it1 != leftList.end())
 	{
 		itMergedList = list.erase(itMergedList);
-		list.insert(itMergedList, *(itsl1));
-		/* list.push_back(*(itsl1)); */
-		itsl1++;
-		/* itMergedList++; */
+		list.insert(itMergedList, *(it1));
+		it1++;
 	}
-	print_list_of_pairs(list);
 
-	/* // Copy the remaining elements of */
-	/* // right[], if there are any */
-	/* while (indexOfSublistTwo < sublistTwo) { */
-	/* 	list[indexOfMergedlist] */
-	/* 		= rightlist[indexOfSublistTwo]; */
-	/* 	indexOfSublistTwo++; */
-	/* 	indexOfMergedlist++; */
-	/* } */
-	while (itsl2 != rightList.end())
+	// Copy the remaining elements of
+	// rightList, if there are any
+	while (it2 != rightList.end())
 	{
-	
-		std::cout << "debug2 " << std::distance(list.begin(), itMergedList) <<  std::endl;
 		itMergedList = list.erase(itMergedList);
-		list.insert(itMergedList, *(itsl2));
-		/* list.push_back(*(itsl2)); */
-		itsl2++;
-		/* itMergedList++; */
+		list.insert(itMergedList, *(it2));
+		it2++;
 	}
 	std::cout << "After merge_sort list: " << std::flush;
 	print_list_of_pairs(list);
-	/* delete[] leftList; */
-	/* delete[] rightList; */
 }
 
 // begin is for left index and end is right index
@@ -284,7 +230,6 @@ void PmergeMe::merge_sort(std::list<std::pair<int,int>> &list, int const begin, 
 		return;
 
 	int mid = begin + (end - begin) / 2;
-	std::cout << "mid=" << mid << std::endl;
 	merge_sort(list, begin, mid);
 	merge_sort(list, mid + 1, end);
 	merge(list, begin, mid, end);

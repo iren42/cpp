@@ -26,6 +26,8 @@ class PmergeMe
 		void	sort_vector();
 void	merge_sort(LIST& list, int const begin, int const end);
 void	merge(LIST& list, int const left, int const mid, int const right);
+void	copy_data_to_sublist(LIST &bigList, LIST& subList, 
+		int const pos, int const dataSize);
 bool	larger_ele_are_sorted(LIST&);
 
 	public:
