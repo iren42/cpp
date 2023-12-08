@@ -12,6 +12,9 @@
 
 # define LIST std::list<std::pair<int, int>>
 
+int	calc_size_group(int i, int& buf);
+void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_insert);
+void	print_list(std::list<int>& myList);
 class PmergeMe
 {
 	private:
@@ -24,11 +27,11 @@ class PmergeMe
 
 		void	sort_list();
 		void	sort_vector();
-void	merge_sort(LIST& list, int const begin, int const end);
-void	merge(LIST& list, int const left, int const mid, int const right);
-void	copy_data_to_sublist(LIST &bigList, LIST& subList, 
-		int const pos, int const dataSize);
-bool	larger_ele_are_sorted(LIST&);
+		void	merge_sort(LIST& list, int const begin, int const end);
+		void	merge(LIST& list, int const left, int const mid, int const right);
+		void	copy_data_to_sublist(LIST &bigList, LIST& subList, 
+				int const pos, int const dataSize);
+		bool	larger_ele_are_sorted(LIST&);
 
 	public:
 		~PmergeMe();
@@ -38,8 +41,7 @@ bool	larger_ele_are_sorted(LIST&);
 
 		static bool	parse(int, char**);
 
-		void	print_list(std::list<int>&);
-void	print_list_of_pairs(LIST& l);
+		void	print_list_of_pairs(LIST& l);
 		void	print_vector();
 
 		void	sort();

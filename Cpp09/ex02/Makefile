@@ -14,11 +14,12 @@ CFLAG	=
 #-Wall -Wextra -Werror -std=c++98 
 
 ifeq ($(DEBUG), 1)
-	CFLAG += -DDEBUG
+	CFLAG += -DDEBUG -fsanitize=address -g
 endif
 
 SANI	= 
-#-fsanitize=address -g3 -Wconversion -Wsign-conversion
+#-fsanitize=address -g3 
+#-Wconversion -Wsign-conversion
 
 RM		= rm -f
 
