@@ -1,48 +1,51 @@
-NAME	= ex01
+NAME	= PmergeMe
 
-HEADER	=	Animal.hpp \
-			Cat.hpp \
-			WrongCat.hpp \
-			WrongAnimal.hpp \
-			Brain.hpp \
-			Dog.hpp
+HEADER	=	PmergeMe.hpp 
 
 
-SRC		=	Animal.cpp \
-			Cat.cpp \
-			WrongCat.cpp \
-			WrongAnimal.cpp \
-			Dog.cpp \
-			Brain.cpp \
-			main.cpp
+SRC		=	main.cpp \
+			PmergeMe.cpp	
 
 OBJ	= $(SRC:.cpp=.o)
 
-
 CC		= c++
 
-CFLAG	= -Wall -Wextra -Werror -std=c++98
+CFLAG	= 
+#-Wall -Wextra -Werror -std=c++98 
 
-SANI	= -fsanitize=address -g3 -Wconversion -Wsign-conversion
+ifeq ($(DEBUG), 1)
+	CFLAG += -DDEBUG -fsanitize=address -g
+endif
+
+SANI	= 
+#-fsanitize=address -g3 
+#-Wconversion -Wsign-conversion
 
 RM		= rm -f
 
+
+.PHONY:	all 
 all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) -c $(SRC)
+			$(CC) $(CFLAG) $(SANI) -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-		$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
+			$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
 
 
+.PHONY: clean
 clean	:
 		$(RM) $(OBJ)
 
+.PHONY: fclean
 fclean	: clean
 		$(RM) $(NAME)
 
+.PHONY:re
 re		: fclean all
 
+.PHONY:debug
+debug	: fclean
+		$(MAKE) DEBUG=1
 
-.PHONY:	all clean fclean re
