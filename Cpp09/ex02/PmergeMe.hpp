@@ -32,6 +32,7 @@ class PmergeMe
 		void	copy_data_to_sublist(LIST &bigList, LIST& subList, 
 				int const pos, int const dataSize);
 		bool	larger_ele_are_sorted(LIST&);
+void	fill_list_of_pairs(LIST& bigList);
 
 	public:
 		~PmergeMe();
