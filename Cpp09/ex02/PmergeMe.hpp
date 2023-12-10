@@ -10,11 +10,19 @@
 # define ERR_ARG "Error: not enough arguments."
 # define ERR_INPUT "Error: input not valid."
 
-# define LIST std::list<std::pair<int, int>>
+# define LIST std::list<std::pair<int, int> >
+# define VECTOR std::vector<std::pair<int, int> >
 
-int	calc_size_group(int i, int& buf);
+long unsigned int	calc_size_group(int i, long unsigned int prevSizeGroup);
 void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_insert);
+void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_insert);
+
+// print functions
 void	print_list(std::list<int>& myList);
+void	print_vec(std::vector<int>& v);
+void	print_list_of_pairs(LIST& l);
+void	print_vec_of_pairs(VECTOR& l);
+
 class PmergeMe
 {
 	private:
@@ -25,14 +33,23 @@ class PmergeMe
 		static bool	is_zero(std::string &s); // for the parsing
 		static bool	is_a_posi_num(std::string& word); // for the parsing
 
+		// for std::list
 		void	sort_list();
-		void	sort_vector();
-		void	merge_sort(LIST& list, int const begin, int const end);
-		void	merge(LIST& list, int const left, int const mid, int const right);
+		void	merge_sort_list(LIST& list, int const begin, int const end);
+		void	merge_list(LIST& list, int const left, int const mid,
+				int const right);
 		void	copy_data_to_sublist(LIST &bigList, LIST& subList, 
 				int const pos, int const dataSize);
-		bool	larger_ele_are_sorted(LIST&);
-void	fill_list_of_pairs(LIST& bigList);
+		void	fill_list_of_pairs(LIST& bigList);
+
+		// for std::vector
+		void	sort_vector();
+		void	fill_vector_of_pairs(VECTOR& bigV);
+		void	merge_sort_vec(VECTOR& vec, int const begin, int const end);
+		void	merge_vec(VECTOR& vec, int const left, int const mid,
+				int const right);
+		void	copy_data_to_subvec(VECTOR &bigvec, VECTOR& subvec, 
+				int const pos, int const dataSize);
 
 	public:
 		~PmergeMe();
@@ -41,9 +58,6 @@ void	fill_list_of_pairs(LIST& bigList);
 		PmergeMe& operator=(const PmergeMe&);
 
 		static bool	parse(int, char**);
-
-		void	print_list_of_pairs(LIST& l);
-		void	print_vector();
 
 		void	sort();
 };

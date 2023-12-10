@@ -10,11 +10,10 @@ OBJ	= $(SRC:.cpp=.o)
 
 CC		= c++
 
-CFLAG	= 
-#-Wall -Wextra -Werror -std=c++98 
+CFLAG	= -g -std=c++98 -Wall -Wextra -Werror 
 
 ifeq ($(DEBUG), 1)
-	CFLAG += -DDEBUG -fsanitize=address -g
+	CFLAG += -DDEBUG -fsanitize=address 
 endif
 
 SANI	= 
@@ -28,10 +27,10 @@ RM		= rm -f
 all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-			$(CC) $(CFLAG) $(SANI) -c $(SRC)
+			$(CC) $(CFLAG)  -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-			$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
+			$(CC) $(CFLAG)  -o $@ $(OBJ) 
 
 
 .PHONY: clean
