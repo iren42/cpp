@@ -47,11 +47,19 @@ void	print_vec_of_pairs(VECTOR& l)
 	std::cout << "};\n";
 }
 
+// calculate the size of groups of to-be-inserted-elements
+// sums of sizes of every two adjacent groups form a sequence of powers of two
 long unsigned int	calc_size_group(int i, long unsigned int buf)
 {
 	return ((1 << i) - buf);
 }
 
+// get current time
+void	get_time(struct timeval& tv)
+{
+	gettimeofday(&tv, NULL);
+	std::cout << tv.tv_sec << " " << tv.tv_usec << " " << std::endl;
+}
 // ---------- CANONICAL CLASS FORM
 PmergeMe::~PmergeMe()
 {
@@ -179,17 +187,18 @@ void	PmergeMe::sort_list()
 	merge_sort_list(big, 0, big.size() - 1);
 
 	// 3 -- create a sequence S of n/2 of the input elements, in ascending order
-	std::list<int>	s;
+	/* std::list<int>	s; */
+	_l.clear();
 	LIST::iterator	itb = big.begin();
 	while (itb != big.end())
 	{
-		s.push_back((*itb).second);
+		_l.push_back((*itb).second);
 		itb++;
 	}
 
 	// 4 -- insert at the start of S the element that was paired with
 	// the first and smallest element of S
-	s.push_front((big.front()).first);
+	_l.push_front((big.front()).first);
 	big.pop_front();
 
 	// 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time,
@@ -210,21 +219,21 @@ void	PmergeMe::sort_list()
 		std::advance(itb, nb_of_ele_to_insert - 1);
 		while (nb_of_ele_to_insert > 0 && nb_of_ele_to_erase > 0 && big.empty() == false) 
 		{
-			// insert all elements from current size group
-			// use binary search to determine the position
+			// insert all elements from current size group ;
+			// use a binary search to determine the position
 			// at which each element should be inserted
 #ifdef DEBUG
 			print_list_of_pairs(big);
 			std::cout << "iterator pos: " << std::distance(big.begin(), itb) << std::flush;
 			std::cout << ", value to insert: " << (*itb).first << std::endl;
 			std::cout << "before insertion: " << std::flush;
-			print_list(s);
+			print_list(_l);
 #endif
-			binary_search_insert_list(s, 0, s.size() - 1, (*itb).first);
+			binary_search_insert_list(_l, 0, size - 1, (*itb).first);
 
 #ifdef DEBUG
 			std::cout << "after insertion: " << std::flush;
-			print_list(s);
+			print_list(_l);
 #endif
 			nb_of_ele_to_insert--;
 			itb--;
@@ -242,10 +251,8 @@ void	PmergeMe::sort_list()
 #endif
 		}
 	}
-	std::cout << "\nSorted list: " << std::flush;
 	if (last >= 0)
-		binary_search_insert_list(s, 0, s.size() - 1, last);
-	print_list(s);
+		binary_search_insert_list(_l, 0, size - 1, last);
 }
 
 // do a binary search in list to insert val_to_insert in it
@@ -291,7 +298,7 @@ void	PmergeMe::copy_data_to_sublist(LIST &big, LIST& subList,
 {
 	int	i = 0;
 	LIST::iterator	it = big.begin();
-	
+
 	std::advance(it, pos);
 	while (i < dataSize)
 	{
@@ -338,7 +345,9 @@ void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 			list.insert(itMerged, *(it2));
 			it2++;
 		}
-		/* itMerged++; */
+#ifdef DEBUG
+		std::cout << "DEBUG for list, after merge, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
+#endif
 	}
 
 	// Copy the remaining elements of
@@ -353,7 +362,7 @@ void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 	// Copy the remaining elements of
 	// rightList, if there are any
 #ifdef DEBUG
-	std::cout << "itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
+	std::cout << "DEBUG for list, after copy leftList, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
 #endif
 	while (it2 != rightList.end())
 	{
@@ -361,6 +370,9 @@ void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 		list.insert(itMerged, *(it2));
 		it2++;
 	}
+#ifdef DEBUG
+	std::cout << "DEBUG for list, after copy rightList, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
+#endif
 }
 
 // begin is for left index and end is right index
@@ -385,30 +397,28 @@ void	PmergeMe::sort_vector()
 	VECTOR	big;
 	long unsigned int		size = _v.size();
 	int		last = -1;
+
 	fill_vector_of_pairs(big);
-	print_vec_of_pairs(big);
 
 	// 3 -- and recursively sort the n/2 larger elements from each pair
 	merge_sort_vec(big, 0, big.size() - 1);
-	std::cout << "Sorted  " << std::flush;
-	print_vec_of_pairs(big);
 
 	// 3 -- create a sequence S of n/2 of the input elements, in ascending order
-	std::vector<int>	s;
+	/* std::vector<int>	s; */
 	VECTOR::iterator	itb = big.begin();
 	while (itb != big.end())
 	{
-		s.push_back((*itb).second);
+		_v.push_back((*itb).second);
 		itb++;
 	}
 	if (size % 2)
 		last = _v.back();
-	
+
 	// 4 -- insert at the start of S the element that was paired with
 	// the first and smallest element of S
-	s.insert(s.begin(), (big.front()).first);
+	_v.insert(_v.begin(), (big.front()).first);
 	big.erase(big.begin());
-	
+
 	// 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time,
 	// with a specially chosen insertion ordering
 	long unsigned int	sizeGroup = 0;
@@ -435,13 +445,13 @@ void	PmergeMe::sort_vector()
 			std::cout << "iterator pos: " << std::distance(big.begin(), itb) << std::flush;
 			std::cout << ", value to insert: " << (*itb).first << std::endl;
 			std::cout << "before insertion: " << std::flush;
-			print_vec(s);
+			print_vec(_v);
 #endif
-			binary_search_insert_vec(s, 0, s.size() - 1, (*itb).first);
+			binary_search_insert_vec(_v, 0, size - 1, (*itb).first);
 
 #ifdef DEBUG
 			std::cout << "after insertion: " << std::flush;
-			print_vec(s);
+			print_vec(_v);
 #endif
 			nb_of_ele_to_insert--;
 			itb--;
@@ -459,13 +469,8 @@ void	PmergeMe::sort_vector()
 #endif
 		}
 	}
-	std::cout << "\nSorted vec: " << std::flush;
 	if (last >= 0)
-	{
-		std::cout << "unpaired ele= " << last << std::endl;
-		binary_search_insert_vec(s, 0, s.size() - 1, last);
-	}
-	print_vec(s);
+		binary_search_insert_vec(_v, 0, size - 1, last);
 }
 
 void	PmergeMe::fill_vector_of_pairs(VECTOR& bigV)
@@ -521,21 +526,17 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 	copy_data_to_subvec(vec, leftVec, left, leftVecSize);
 	copy_data_to_subvec(vec, rightVec, mid + 1, rightVecSize);
 
+#ifdef DEBUG
 	/* std::cout << "Left vec " << std::flush; */
 	/* print_vec_of_pairs(leftVec); */
 	/* std::cout << "Right vec " << std::flush; */
 	/* print_vec_of_pairs(rightVec); */
+#endif
 	VECTOR::iterator	it1 = leftVec.begin();
 	VECTOR::iterator	it2 = rightVec.begin();
 	VECTOR::iterator	itMerged = vec.begin();
-	// place the iterator itMerged at the element list.at(left)
-	/* int	i = 0; */
+
 	std::advance(itMerged, left);
-	/* while (i < left) */
-	/* { */
-	/* 	i++; */
-	/* 	itMerged++; */	
-	/* } */
 	// Merge the temp lists back into list[left..right]
 	while (it1 != leftVec.end() && it2 != rightVec.end())
 	{
@@ -554,6 +555,9 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 		itMerged++;
 	}
 
+#ifdef DEBUG
+	std::cout << "DEBUG for vec, after merge, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
+#endif
 	// Copy the remaining elements of
 	// leftVec, if there are any
 	while (it1 != leftVec.end())
@@ -567,7 +571,7 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 	// Copy the remaining elements of
 	// rightVec, if there are any
 #ifdef DEBUG
-	std::cout << "itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
+	std::cout << "DEBUG for vec, after left[] copy, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
 #endif
 	while (it2 != rightVec.end())
 	{
@@ -576,6 +580,9 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 		itMerged++;
 		it2++;
 	}
+#ifdef DEBUG
+	std::cout << "DEBUG for vec, after right[] copy, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
+#endif
 }
 
 
@@ -584,7 +591,7 @@ void	PmergeMe::copy_data_to_subvec(VECTOR &bigVec, VECTOR& subvec,
 {
 	int	i = 0;
 	VECTOR::iterator	it = bigVec.begin();
-	
+
 	std::advance(it, pos);
 	while (i < dataSize)
 	{
@@ -633,12 +640,17 @@ void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_i
 
 void	PmergeMe::sort()
 {
+	struct timeval	start;
+	struct timeval	end;
+	
 	std::cout << "Before: " << std::flush;
 	print_list(_l);
+	get_time(start);
 	sort_list();
+	get_time(end);
 	std::cout << "After: " << std::flush;
 	print_list(_l);
-
-	std::cout << "\n\nSorting a vector " << std::endl;
+	std::cout << "Time to process a range of " << _l.size() << " elements with std::list : "
+		<< end.tv_usec - start.tv_usec << std::endl;
 	sort_vector();
 }

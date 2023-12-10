@@ -6,6 +6,8 @@
 # include <vector>
 # include <string>
 # include <algorithm>
+# include <sys/time.h>
+# include <ctime>
 
 # define ERR_ARG "Error: not enough arguments."
 # define ERR_INPUT "Error: input not valid."
@@ -16,6 +18,7 @@
 long unsigned int	calc_size_group(int i, long unsigned int prevSizeGroup);
 void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_insert);
 void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_insert);
+void	get_time(struct timeval& tv);
 
 // print functions
 void	print_list(std::list<int>& myList);
