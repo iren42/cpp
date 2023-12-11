@@ -10,15 +10,15 @@ OBJ	= $(SRC:.cpp=.o)
 
 CC		= c++
 
-CFLAG	= -g -std=c++98 -Wall -Wextra -Werror 
+CFLAG	= -std=c++98 -Wall -Wextra -Werror 
+#-Wconversion -Wsign-conversion
 
 ifeq ($(DEBUG), 1)
-	CFLAG += -DDEBUG -fsanitize=address 
+	CFLAG += -DDEBUG -fsanitize=address -g
 endif
 
 SANI	= 
 #-fsanitize=address -g3 
-#-Wconversion -Wsign-conversion
 
 RM		= rm -f
 

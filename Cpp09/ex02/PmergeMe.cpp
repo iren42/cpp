@@ -49,17 +49,26 @@ void	print_vec_of_pairs(VECTOR& l)
 
 // calculate the size of groups of to-be-inserted-elements
 // sums of sizes of every two adjacent groups form a sequence of powers of two
-long unsigned int	calc_size_group(int i, long unsigned int buf)
+int	calc_size_group(int i, int buf)
 {
 	return ((1 << i) - buf);
 }
 
-// get current time
-void	get_time(struct timeval& tv)
+// calculate how many microseconds have passed from start to end
+long int calc_usec(struct timeval& start, struct timeval& end)
 {
-	gettimeofday(&tv, NULL);
-	std::cout << tv.tv_sec << " " << tv.tv_usec << " " << std::endl;
+	long int	usec;
+
+	usec = (end.tv_sec - start.tv_sec) * 1000000; // convert sec to usec
+	if (end.tv_usec - start.tv_usec < 0)
+	{
+		/* std::cout << "full round of usec" << std::endl; */
+		usec += 1000000;
+	}
+	usec += end.tv_usec - start.tv_usec;
+	return (usec);
 }
+
 // ---------- CANONICAL CLASS FORM
 PmergeMe::~PmergeMe()
 {
@@ -145,7 +154,7 @@ void	PmergeMe::fill_list_of_pairs(LIST& big)
 	std::list<int>::iterator iti = _l.begin();
 	std::list<int>::iterator itp = _l.begin();
 	int	i = 0;
-	int	size = _l.size();
+	int	size = static_cast<int>(_l.size());
 
 	itp++;
 	while (i < size / 2)
@@ -169,7 +178,7 @@ void	PmergeMe::sort_list()
 {
 	// 1 -- group the elements into n/2 pairs and sort each pair
 	// 2 -- perform n/2 comparisons to determine the larger of the 2 elements
-	long unsigned int		size = _l.size();
+	int		size = static_cast<int>(_l.size());
 	int		last = -1;
 	LIST	big;
 
@@ -184,7 +193,7 @@ void	PmergeMe::sort_list()
 		last = _l.back();
 
 	// 3 -- and recursively sort the n/2 larger elements from each pair
-	merge_sort_list(big, 0, big.size() - 1);
+	merge_sort_list(big, 0, static_cast<int>(big.size()) - 1);
 
 	// 3 -- create a sequence S of n/2 of the input elements, in ascending order
 	/* std::list<int>	s; */
@@ -203,7 +212,7 @@ void	PmergeMe::sort_list()
 
 	// 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time,
 	// with a specially chosen insertion ordering
-	long unsigned int	sizeGroup = 0;
+	int	sizeGroup = 0;
 	int	nb_of_ele_to_insert;
 	int	nb_of_ele_to_erase;
 	int	i = 1;
@@ -211,8 +220,8 @@ void	PmergeMe::sort_list()
 	{
 		itb = big.begin();
 		sizeGroup = calc_size_group(i++, sizeGroup);
-		if (sizeGroup > big.size())
-			sizeGroup = big.size();
+		if (sizeGroup > static_cast<int>(big.size()))
+			sizeGroup = static_cast<int>(big.size());
 		nb_of_ele_to_insert = sizeGroup;
 		nb_of_ele_to_erase = sizeGroup;
 
@@ -394,25 +403,25 @@ void	PmergeMe::sort_vector()
 {
 	// 1 -- group the elements into n/2 pairs and sort each pair
 	// 2 -- perform n/2 comparisons to determine the larger of the 2 elements
-	VECTOR	big;
-	long unsigned int		size = _v.size();
+	int		size = static_cast<int>(_v.size());
 	int		last = -1;
+	VECTOR	big;
 
 	fill_vector_of_pairs(big);
 
+	if (size % 2)
+		last = _v.back();
 	// 3 -- and recursively sort the n/2 larger elements from each pair
-	merge_sort_vec(big, 0, big.size() - 1);
+	merge_sort_vec(big, 0, static_cast<int>(big.size()) - 1);
 
 	// 3 -- create a sequence S of n/2 of the input elements, in ascending order
-	/* std::vector<int>	s; */
+	_v.clear();
 	VECTOR::iterator	itb = big.begin();
 	while (itb != big.end())
 	{
 		_v.push_back((*itb).second);
 		itb++;
 	}
-	if (size % 2)
-		last = _v.back();
 
 	// 4 -- insert at the start of S the element that was paired with
 	// the first and smallest element of S
@@ -421,7 +430,7 @@ void	PmergeMe::sort_vector()
 
 	// 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time,
 	// with a specially chosen insertion ordering
-	long unsigned int	sizeGroup = 0;
+	int	sizeGroup = 0;
 	int	nb_of_ele_to_insert;
 	int	nb_of_ele_to_erase;
 	int	i = 1;
@@ -429,8 +438,8 @@ void	PmergeMe::sort_vector()
 	{
 		itb = big.begin();
 		sizeGroup = calc_size_group(i++, sizeGroup);
-		if (sizeGroup > big.size())
-			sizeGroup = big.size();
+		if (sizeGroup > static_cast<int>(big.size()))
+			sizeGroup = static_cast<int>(big.size());
 		nb_of_ele_to_insert = sizeGroup;
 		nb_of_ele_to_erase = sizeGroup;
 
@@ -479,7 +488,7 @@ void	PmergeMe::fill_vector_of_pairs(VECTOR& bigV)
 	std::vector<int>::iterator iti = _v.begin();
 	std::vector<int>::iterator itp = _v.begin();
 	int	i = 0;
-	int	size = _v.size();
+	int	size = static_cast<int>(_v.size());
 
 	itp++;
 	while (i < size / 2)
@@ -640,17 +649,28 @@ void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_i
 
 void	PmergeMe::sort()
 {
-	struct timeval	start;
-	struct timeval	end;
+	struct timeval	start = {0, 0};
+	struct timeval	end = {0, 0};
+	long int	timerOne = 0;
+	long int	timerTwo = 0;
 	
 	std::cout << "Before: " << std::flush;
-	print_list(_l);
-	get_time(start);
-	sort_list();
-	get_time(end);
-	std::cout << "After: " << std::flush;
-	print_list(_l);
-	std::cout << "Time to process a range of " << _l.size() << " elements with std::list : "
-		<< end.tv_usec - start.tv_usec << std::endl;
+	print_vec(_v);
+	// time used by algo to sort a vector
+	gettimeofday(&start, NULL);
 	sort_vector();
+	gettimeofday(&end, NULL);
+	timerOne = calc_usec(start, end);
+	std::cout << "After: " << std::flush;
+	print_vec(_v);
+
+	std::cout << "Time to process a range of " << _v.size() << " elements with std::vector : "
+		<< timerOne << " us" << std::endl;
+	// time used by algo to sort a list
+	gettimeofday(&start, NULL);
+	sort_list();
+	gettimeofday(&end, NULL);
+	timerTwo = calc_usec(start, end);
+	std::cout << "Time to process a range of " << _v.size() << " elements with std::list : "
+		<< timerTwo << " us" << std::endl;
 }

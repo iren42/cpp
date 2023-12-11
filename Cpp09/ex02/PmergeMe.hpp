@@ -15,10 +15,10 @@
 # define LIST std::list<std::pair<int, int> >
 # define VECTOR std::vector<std::pair<int, int> >
 
-long unsigned int	calc_size_group(int i, long unsigned int prevSizeGroup);
+int	calc_size_group(int i, int prevSizeGroup);
 void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_insert);
 void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_insert);
-void	get_time(struct timeval& tv);
+long int	calc_usec(struct timeval& start, struct timeval& end);
 
 // print functions
 void	print_list(std::list<int>& myList);
