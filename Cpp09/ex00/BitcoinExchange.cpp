@@ -22,24 +22,78 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 	return (*this);
 }
 
-/* read the database file line by line */
-bool	BitcoinExchange::read_db()
+/* expects a string like " n", for n a float or positive integer, in [0,1000] */
+bool	BitcoinExchange::parse_value(const std::string& s, const std::string& line)
+{
+	double	res;
+
+	(void)line;
+	if (line.empty() == true)
+		return (false);
+	res = atof(s.c_str());
+	if (res < 0)
+	{
+		print(ERR_NOT_POS);
+		return (false);
+	}
+	if (res > 1000)
+	{
+		print(ERR_TOO_BIG);
+		return (false);
+	}
+	return (true);
+}
+
+/* function expects the string in format "yyyy-mm-dd " */
+bool	BitcoinExchange::parse_date(const std::string& s, int& d, int& m, int& y){
+	std::istringstream is(s);
+
+	if (is >> y && is.get() == '-' && is >> m && is.get() == '-' && is >> d && is.eof())
+	{
+		if (y < 2009 || m < 1 || m > 12 || d < 1 || d > 31)
+			return (false);
+		// initialize
+		struct tm local = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		local.tm_mday = d;
+		local.tm_mon = m - 1;
+		local.tm_year = y - 1900;
+		local.tm_isdst = -1;
+
+		// normalize:
+		// mktime() interpretes values even if out of their valid ranges
+		// e.g. 29/02/2013 would become 01/03/2013
+		time_t epoch = mktime(&local);
+		const struct tm *norm = localtime(&epoch); // reverse mktime()
+
+		// compare
+		return (norm->tm_mday == d    &&
+				norm->tm_mon  == m - 1 &&
+				norm->tm_year == y - 1900);
+	}
+	return (false);
+}
+
+/* read the database file "dbname" line by line
+   and fill the member var container*/
+void	BitcoinExchange::read_db(const char* dbname)
 {
 	char	buf[BUFSIZE];
 	std::ifstream	ifs;
 
-	ifs.open(DATABASE);
+	ifs.open(dbname);
 	if (ifs.is_open() == false)
-
+		throw std::runtime_error(ERR_DB);
 	ifs.getline(buf, BUFSIZE - 1);
 	while(ifs.eof() == false && ifs.fail() == false)
 	{
 		ifs.getline(buf, BUFSIZE - 1);
-		if (ifs.fail() == false)
+		if (ifs.fail() == false) // check failbit and badbit
+			/* if you get a number when expect to retrieve a letter,
+			   it's failbit. If a serious error happens, which disrupts the 
+			   ability to read from the stream at all - it's a badbit. */
 			fill_container(buf);
 	}
 	ifs.close();
-	return (true);
 }
 
 /* insert a pair of date and value in the _db */
@@ -88,19 +142,35 @@ void	BitcoinExchange::exchange_rate(const char *line)
 {
 	std::string				buf = line;
 	std::string::size_type	pos = buf.find_first_of('|');
+	if (pos == std::string::npos)
+	{
+		print(ERR_BAD_INPUT(buf));
+		return ;
+	}
+	if (buf.size() < pos + 2)
+	{
+		print(ERR_BAD_INPUT(buf));
+		return ;
+	}
+	if (buf.at(pos - 1) != ' ' || buf.at(pos + 1) != ' ')
+	{
+		print(ERR_BAD_INPUT(buf));
+		return ;
+	}
 	std::string				date = buf.substr(0, pos - 1);
-	std::string				value = buf.substr(pos + 2);
+	std::string				value = buf.substr(pos + 1);
 	MAP::iterator			it = _db.find(date);
 	double					result;
 
-	if (parse(date, value) == false)
+	/* std::cout << "date:[" << date << "] , value:[" << value << "]" << std::endl; */
+	if (parse(date, value, buf) == false)
 		return ;
 	if (it == _db.end()) // input date does not exist in DB
 	{
 		it = _db.lower_bound(date); // find the lower closest date
 		if (it == _db.begin()) // lower closest date does not exist
 		{
-			print(ERR_DATE(date));
+			print(ERR_BAD_INPUT(buf));
 			return ;
 		}
 		--it;
@@ -110,7 +180,9 @@ void	BitcoinExchange::exchange_rate(const char *line)
 	std::cout << date << " => " << value << " = " << result << std::endl;
 }
 
-bool	BitcoinExchange::parse(const std::string& date, const std::string& value)
+// parse the input file. Expected format: "date | value"
+bool	BitcoinExchange::parse(const std::string& date, const std::string& value, 
+		const std::string& line)
 {
 	int	d;
 	int	m;
@@ -118,8 +190,8 @@ bool	BitcoinExchange::parse(const std::string& date, const std::string& value)
 
 	if (parse_date(date, d, m, y) == false)
 	{
-		print(ERR_DATE(date));
+		print(ERR_BAD_INPUT(line));
 		return (false);
 	}
-	return (parse_value(value));
+	return (parse_value(value, line));
 }
