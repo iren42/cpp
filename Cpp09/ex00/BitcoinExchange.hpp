@@ -17,14 +17,12 @@
 
 /* error messages */
 # define ERR_OPEN "Error: could not open file."
-# define ERR_DB "Error: could not open database."
-/* # define ERR_STREAM "Error: failed to read file." */
+# define ERR_DB "Error: could not read database."
 # define ERR_NOT_POS "Error: not a positive number."
 # define ERR_TOO_BIG "Error: too large a number."
 # define ERR_BAD_INPUT(erroneusline) "Error: bad input => " + erroneusline 
 
 # define MAP std::map<std::string, std::string>
-# define BUFSIZE 40
 
 
 void	print(const std::string& reason);
@@ -34,13 +32,15 @@ class BitcoinExchange
 	private:
 		MAP	_db;
 		
-		void	fill_container(const char *);
-		void	exchange_rate(const char*);
+		void	exchange_rate(const std::string&);
 		bool	parse(const std::string&, const std::string&,
 				const std::string&);
 
 		bool	parse_date(const std::string&, int&, int&, int&); // used in parse()
+		bool	good_date_format(const std::string&);
+		bool	is_digit(char); // used in good_date_format()
 		bool	parse_value(const std::string&, const std::string&); // used in parse()
+		bool	is_number(const std::string& line); // used in parse_value()
 
 
 	public:

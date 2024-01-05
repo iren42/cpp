@@ -3,7 +3,6 @@
 //		std::cout << << std::endl;
 BitcoinExchange::~BitcoinExchange()
 {
-	_db.clear();
 }
 
 BitcoinExchange::BitcoinExchange()
@@ -22,15 +21,50 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 	return (*this);
 }
 
-/* expects a string like " n", for n a float or positive integer, in [0,1000] */
-bool	BitcoinExchange::parse_value(const std::string& s, const std::string& line)
+bool	BitcoinExchange::is_digit(char c)
+{
+	if (c < '0' || c > '9')
+		return (false);
+	return (true);
+}
+
+bool	BitcoinExchange::is_number(const std::string& line)
+{
+	std::string::const_iterator	it = line.begin();
+	int	dot;
+
+	dot = 1;
+	it++; // move past ' '
+	while (it != line.end())
+	{
+		if ((*it < '0' || *it > '9') && *it != '.')
+			return (false);
+		if (*it == '.')
+			dot--;
+		it++;
+	}
+	if (dot < 0)
+		return (false);
+	return (true);
+}
+
+/* expects a string like "n", for n a float or positive integer, in [0,1000] */
+bool	BitcoinExchange::parse_value(const std::string& n,
+		const std::string& inputLine)
 {
 	double	res;
 
-	(void)line;
-	if (line.empty() == true)
+	if (n.empty() == true)
+	{
+		print(ERR_BAD_INPUT(inputLine));
 		return (false);
-	res = atof(s.c_str());
+	}
+	if (!is_number(n))
+	{
+		print(ERR_BAD_INPUT(inputLine));
+		return (false);
+	}
+	res = atof(n.c_str());
 	if (res < 0)
 	{
 		print(ERR_NOT_POS);
@@ -44,11 +78,28 @@ bool	BitcoinExchange::parse_value(const std::string& s, const std::string& line)
 	return (true);
 }
 
-/* function expects the string in format "yyyy-mm-dd " */
-bool	BitcoinExchange::parse_date(const std::string& s, int& d, int& m, int& y){
-	std::istringstream is(s);
+bool	BitcoinExchange::good_date_format(const std::string& date)
+{
+	if (date.length() != 10)
+		return (false);
+	if (!is_digit(date.at(0)) || !is_digit(date.at(1))
+			|| !is_digit(date.at(2)) || !is_digit(date.at(3))
+			|| !is_digit(date.at(5)) || !is_digit(date.at(6))
+			|| !is_digit(date.at(8)) || !is_digit(date.at(9)))
+		return (false);
+	if (date.at(4) != '-' || date.at(7) != '-')
+		return (false);
+	return (true);
+}
 
-	if (is >> y && is.get() == '-' && is >> m && is.get() == '-' && is >> d && is.eof())
+/* function expects the string in format "yyyy-mm-dd" */
+bool	BitcoinExchange::parse_date(const std::string& inputLine, int& d, int& m, int& y){
+	std::istringstream is(inputLine);
+	char delimiter;
+
+	if (!good_date_format(inputLine))
+		return (false);
+	if (is >> y >> delimiter >> m >> delimiter >> d && is.eof())
 	{
 		if (y < 2009 || m < 1 || m > 12 || d < 1 || d > 31)
 			return (false);
@@ -66,9 +117,9 @@ bool	BitcoinExchange::parse_date(const std::string& s, int& d, int& m, int& y){
 		const struct tm *norm = localtime(&epoch); // reverse mktime()
 
 		// compare
-		return (norm->tm_mday == d    &&
-				norm->tm_mon  == m - 1 &&
-				norm->tm_year == y - 1900);
+		return (norm->tm_mday == d
+				&& norm->tm_mon  == m - 1
+				&& norm->tm_year == y - 1900);
 	}
 	return (false);
 }
@@ -77,32 +128,24 @@ bool	BitcoinExchange::parse_date(const std::string& s, int& d, int& m, int& y){
    and fill the member var container*/
 void	BitcoinExchange::read_db(const char* dbname)
 {
-	char	buf[BUFSIZE];
-	std::ifstream	ifs;
+	std::string				buf;
+	std::string::size_type	pos;
+	std::ifstream			ifs(dbname);
 
-	ifs.open(dbname);
-	if (ifs.is_open() == false)
+	if (ifs == false)
 		throw std::runtime_error(ERR_DB);
-	ifs.getline(buf, BUFSIZE - 1);
-	while(ifs.eof() == false && ifs.fail() == false)
+	std::getline(ifs, buf); // jump to 2nd line 
+	while(std::getline(ifs, buf))
 	{
-		ifs.getline(buf, BUFSIZE - 1);
-		if (ifs.fail() == false) // check failbit and badbit
-			/* if you get a number when expect to retrieve a letter,
-			   it's failbit. If a serious error happens, which disrupts the 
-			   ability to read from the stream at all - it's a badbit. */
-			fill_container(buf);
+		pos = buf.find_first_of(',');
+		if (pos == std::string::npos)
+		{
+			ifs.close();
+			throw std::runtime_error(ERR_DB);
+		}
+		_db.insert(std::make_pair(buf.substr(0, pos) , buf.substr(pos + 1)));
 	}
 	ifs.close();
-}
-
-/* insert a pair of date and value in the _db */
-void	BitcoinExchange::fill_container(const char *s)
-{
-	std::string	buf = s;
-
-	std::string::size_type	pos = buf.find_first_of(',');
-	_db.insert(std::make_pair(buf.substr(0, pos) , buf.substr(pos + 1)));
 }
 
 void	BitcoinExchange::print_container()
@@ -118,29 +161,24 @@ void	BitcoinExchange::print_container()
 /* read the input file line by line and apply the exchange rate to each line */
 void	BitcoinExchange::calc(const char *input)
 {
-	std::ifstream	ifs;
-	char	buf[BUFSIZE];
+	std::ifstream	ifs(input);
+	std::string		buf;
 
-	ifs.open(input);
-	if (ifs.is_open() == false)
+	if (ifs == false)
 	{
-		_db.clear();
 		throw std::runtime_error(ERR_OPEN);
 	}
-	ifs.getline(buf, BUFSIZE - 1); /* skip 1st line */
-	while(ifs.eof() == false && ifs.fail() == false)
+	std::getline(ifs, buf); // jump to 2nd line
+	while (std::getline(ifs, buf))
 	{
-		ifs.getline(buf, BUFSIZE - 1);
-		if (ifs.fail() == false)
-			exchange_rate(buf);
+		exchange_rate(buf);
 	}
 	ifs.close();
 }
 
 /* multiply the input value by the bitcoin exchange rate */
-void	BitcoinExchange::exchange_rate(const char *line)
+void	BitcoinExchange::exchange_rate(const std::string& buf)
 {
-	std::string				buf = line;
 	std::string::size_type	pos = buf.find_first_of('|');
 	if (pos == std::string::npos)
 	{
@@ -158,7 +196,7 @@ void	BitcoinExchange::exchange_rate(const char *line)
 		return ;
 	}
 	std::string				date = buf.substr(0, pos - 1);
-	std::string				value = buf.substr(pos + 1);
+	std::string				value = buf.substr(pos + 2);
 	MAP::iterator			it = _db.find(date);
 	double					result;
 
