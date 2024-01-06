@@ -53,6 +53,7 @@ int	RPN::calc(const char *s)
 	int					a;
 	int					b;
 	int	(*func)(int, int) = 0;
+	long long			n;
 
 	while (ss >> word)
 	{
@@ -115,7 +116,12 @@ int	RPN::calc(const char *s)
 #ifdef DEBUG
 			std::cout << "\t" << word << " is a number!!" << std::endl;
 #endif
-			_stack.push(ft_atoi(word));
+			n = strtol(word.c_str(), NULL, 10);
+			if (n > static_cast<long long>(INT_MAX))
+				throw std::runtime_error(ERR_INT_MAX);
+			if (n < static_cast<long long>(INT_MIN))
+				throw std::runtime_error(ERR_INT_MIN);
+			_stack.push(static_cast<int>(n));
 		}
 	}
 	if (_stack.size() != 1)
@@ -148,15 +154,6 @@ bool	RPN::is_a_num(std::string& word)
 	if (num == 0 && is_zero(word) == false)
 		return (false);
 	return (true);
-}
-
-int	RPN::ft_atoi(std::string& s)
-{
-	char	*buf= new char[s.size() + 1];
-	strncpy(buf, s.c_str(), s.size() + 1);
-	int	n = (atoi(buf));
-	delete [] buf;
-	return (n);
 }
 
 void	RPN::print_stack()

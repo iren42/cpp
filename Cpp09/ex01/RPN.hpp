@@ -3,13 +3,13 @@
 
 # include <iostream>
 # include <exception>
-# include <limits.h>
+# include <climits>
+# include <cstdlib> // strtol
 
 # include <stack>
 # include <sstream>
 # include <string>
 # include <cstring> // strcpy
-# include <stdlib.h> // atoi
 
 # define ERR_ARG "Error: RPN expression should be in quotation marks."
 # define ERR_NOT_A_RPN_EXPR "Error: not a valid RPN expression."
@@ -26,7 +26,6 @@ class RPN
 		std::string		_tokens;
 
 		bool	is_a_num(std::string& word);
-		int	ft_atoi(std::string&);
 		bool	is_zero(std::string& s);
 
 		/* basic operations */
