@@ -3,10 +3,9 @@
 //		std::cout << << std::endl;
 RPN::~RPN()
 {
-	/* print_stack(); */
 }
 
-RPN::RPN() : _res(0), _tokens(TOKENS)
+RPN::RPN() : _tokens(TOKENS)
 {
 }
 
@@ -45,6 +44,7 @@ bool	RPN::parse(const char* s)
 	return (true);
 }
 
+/* we don’t need to manage the brackets or decimal numbers. */
 int	RPN::calc(const char *s)
 {
 	std::stringstream	ss(s);
@@ -53,7 +53,6 @@ int	RPN::calc(const char *s)
 	int					a;
 	int					b;
 	int	(*func)(int, int) = 0;
-	int	res = 0;
 
 	while (ss >> word)
 	{
@@ -81,10 +80,7 @@ int	RPN::calc(const char *s)
 #endif
 					func = get_func(word);
 					if (func)
-					{
-						res = func(a, b);
-						_stack.push(res);
-					}
+						_stack.push(func(a, b));
 					else
 					{
 						std::cout << "func pointer was not found" << std::endl;
@@ -154,7 +150,7 @@ bool	RPN::is_a_num(std::string& word)
 	return (true);
 }
 
-int	ft_atoi(std::string& s)
+int	RPN::ft_atoi(std::string& s)
 {
 	char	*buf= new char[s.size() + 1];
 	strncpy(buf, s.c_str(), s.size() + 1);
@@ -178,28 +174,49 @@ void	RPN::print_stack()
 	std::cout << "== END OF PRINT STACK ===" << std::endl;
 }
 
-int	multiply(int a, int b)
+int	RPN::multiply(int a, int b)
 {
+	long long	c = static_cast<long long>(a) * static_cast<long long>(b);
+	if (c > static_cast<long long>(INT_MAX))
+		throw std::runtime_error(ERR_INT_MAX);
+	if (c < static_cast<long long>(INT_MIN))
+		throw std::runtime_error(ERR_INT_MIN);
 	return (a * b);
 }
-int	add(int a, int b)
+
+int	RPN::add(int a, int b)
 {
+	long long	c = static_cast<long long>(a) + static_cast<long long>(b);
+	if (c > static_cast<long long>(INT_MAX))
+		throw std::runtime_error(ERR_INT_MAX);
+	if (c < static_cast<long long>(INT_MIN))
+		throw std::runtime_error(ERR_INT_MIN);
 	return (a + b);
 }
-int	substract(int a, int b)
+
+int	RPN::substract(int a, int b)
 {
+	long long	c = static_cast<long long>(a) - static_cast<long long>(b);
+	if (c > static_cast<long long>(INT_MAX))
+		throw std::runtime_error(ERR_INT_MAX);
+	if (c < static_cast<long long>(INT_MIN))
+		throw std::runtime_error(ERR_INT_MIN);
 	return (a - b);
 }
-int	divide(int a, int b)
+
+int	RPN::divide(int a, int b)
 {
 	if (b == 0)
-	{
 		throw std::runtime_error(ERR_DIV_BY_ZERO);
-	}
+	long long	c = static_cast<long long>(a) / static_cast<long long>(b);
+	if (c > static_cast<long long>(INT_MAX))
+		throw std::runtime_error(ERR_INT_MAX);
+	if (c < static_cast<long long>(INT_MIN))
+		throw std::runtime_error(ERR_INT_MIN);
 	return (a / b);
 }
 
-int	(*get_func(std::string op))(int, int)
+int	(*RPN::get_func(std::string op))(int, int)
 {
 	if (!(op.compare("+")))
 		return (&add);
