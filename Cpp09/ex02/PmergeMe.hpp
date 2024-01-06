@@ -2,6 +2,8 @@
 # define PMERGEME_HPP
 
 # include <iostream>
+# include <exception>
+# include <limits.h>
 # include <list>
 # include <vector>
 # include <string>
@@ -11,6 +13,8 @@
 
 # define ERR_ARG "Error: not enough arguments."
 # define ERR_INPUT "Error: input not valid."
+# define ERR_INT_MAX "Error: INT overflow."
+# define ERR_INT_MIN "Error: INT underflow."
 
 # define LIST std::list<std::pair<int, int> >
 # define VECTOR std::vector<std::pair<int, int> >
@@ -46,7 +50,7 @@ class PmergeMe
 		void	fill_list_of_pairs(LIST& bigList);
 
 		// for std::vector
-		void	sort_vector();
+		void	sort_vec();
 		void	fill_vector_of_pairs(VECTOR& bigV);
 		void	merge_sort_vec(VECTOR& vec, int const begin, int const end);
 		void	merge_vec(VECTOR& vec, int const left, int const mid,

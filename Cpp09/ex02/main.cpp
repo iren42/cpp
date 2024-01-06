@@ -5,16 +5,11 @@ int	main(int ac, char *av[])
 	try
 	{
 		if (ac < 3)
-		{
 			throw std::runtime_error(ERR_ARG);
-		}
-		else
-		{
-			if (PmergeMe::parse(ac, av) == false)
-				throw std::runtime_error(ERR_INPUT);
-			PmergeMe pmerge(ac, av);
-			pmerge.sort();
-		}
+		if (PmergeMe::parse(ac, av) == false)
+			throw std::runtime_error(ERR_INPUT);
+		PmergeMe pmerge(ac, av);
+		pmerge.sort();
 	}
 	catch (const std::exception& e)
 	{
@@ -23,3 +18,5 @@ int	main(int ac, char *av[])
 	}
 	return (0);
 }
+
+/* ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "` */

@@ -69,7 +69,7 @@ long int calc_usec(struct timeval& start, struct timeval& end)
 	return (usec);
 }
 
-// ---------- CANONICAL CLASS FORM
+// ---------- COPLIEN CLASS FORM
 PmergeMe::~PmergeMe()
 {
 }
@@ -79,6 +79,7 @@ PmergeMe::PmergeMe(int ac, char **av)
 	int	i;
 
 	i = 1;
+	_v.reserve(ac - 1);
 	while (i < ac)
 	{
 		_l.push_back(atoi(av[i]));
@@ -140,8 +141,12 @@ bool	PmergeMe::is_zero(std::string &s)
 
 bool	PmergeMe::is_a_posi_num(std::string& word)
 {
-	int	num = atoi(word.c_str());
+	long long	num = static_cast<long long>(atoi(word.c_str()));
 
+	if (num > static_cast<long long>(INT_MAX))
+		throw std::runtime_error(ERR_INT_MAX);
+	if (num < static_cast<long long>(INT_MIN))
+		throw std::runtime_error(ERR_INT_MIN);
 	if (num == 0 && is_zero(word) == false)
 		return (false);
 	return (true && num >= 0);
@@ -183,11 +188,6 @@ void	PmergeMe::sort_list()
 	LIST	big;
 
 	fill_list_of_pairs(big);
-#ifdef DEBUG
-	std::cout << "Unsorted list of pairs: " << std::flush;
-	print_list_of_pairs(big);
-	std::cout << std::endl;
-#endif
 	// last element in a odd number of elements
 	if (size % 2)
 		last = _l.back();
@@ -231,19 +231,8 @@ void	PmergeMe::sort_list()
 			// insert all elements from current size group ;
 			// use a binary search to determine the position
 			// at which each element should be inserted
-#ifdef DEBUG
-			print_list_of_pairs(big);
-			std::cout << "iterator pos: " << std::distance(big.begin(), itb) << std::flush;
-			std::cout << ", value to insert: " << (*itb).first << std::endl;
-			std::cout << "before insertion: " << std::flush;
-			print_list(_l);
-#endif
-			binary_search_insert_list(_l, 0, size - 1, (*itb).first);
+			binary_search_insert_list(_l, 0, _l.size() - 1, (*itb).first);
 
-#ifdef DEBUG
-			std::cout << "after insertion: " << std::flush;
-			print_list(_l);
-#endif
 			nb_of_ele_to_insert--;
 			itb--;
 			// erase every inserted element from big
@@ -253,11 +242,6 @@ void	PmergeMe::sort_list()
 				big.erase(itb);
 				nb_of_ele_to_erase--;
 			}
-#ifdef DEBUG
-			std::cout << "pairs remaining " << std::flush;
-			print_list_of_pairs(big);
-			std::cout << std::endl;
-#endif
 		}
 	}
 	if (last >= 0)
@@ -276,10 +260,6 @@ void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_in
 		/* std::cout << "l=" << l << " , r=" << r << " ,m= " << m << std::endl; */
 		it = list.begin();
 		std::advance(it, m);
-#ifdef DEBUG
-		/* print_list(list); */
-		/* std::cout << "*it= " << *it << std::endl; */
-#endif
 		// Check if val_to_insert is present at mid
 		if ((*it) == val_to_insert)
 		{
@@ -295,9 +275,6 @@ void	binary_search_insert_list(std::list<int>& list, int l, int r, int val_to_in
 	}
 	if (*it < val_to_insert)
 		it++;
-#ifdef DEBUG
-	/* std::cout << "iterator pos: " << std::distance(list.begin(), it) << std::endl; */
-#endif
 	list.insert(it, val_to_insert);
 	/* std::cout << "Out binary_search_insert_list\n" << std::endl; */
 }
@@ -320,26 +297,23 @@ void	PmergeMe::copy_data_to_sublist(LIST &big, LIST& subList,
 // Merges two sublists of list.
 // First sublist is arr[begin..mid]
 // Second sublist is arr[mid+1..end]
+// iterator for std::list::insert is validited, as opposed to st::vector
 void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 		int const right)
 {
 	int const leftListSize = mid - left + 1;
 	int const rightListSize = right - mid;
 
-	// Create temp lists
 	LIST	leftList;
 	LIST	rightList;
 
-	// Copy data to temp lists leftlist and rightlist
 	copy_data_to_sublist(list, leftList, left, leftListSize);
 	copy_data_to_sublist(list, rightList, mid + 1, rightListSize);
 
 	LIST::iterator	it1 = leftList.begin();
 	LIST::iterator	it2 = rightList.begin();
 	LIST::iterator	itMerged = list.begin();
-	// place the iterator itMerged at the element list.at(left)
 	std::advance(itMerged, left);
-	// Merge the temp lists back into list[left..right]
 	while (it1 != leftList.end() && it2 != rightList.end())
 	{
 		if ((*it1).second <= (*it2).second)
@@ -354,9 +328,6 @@ void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 			list.insert(itMerged, *(it2));
 			it2++;
 		}
-#ifdef DEBUG
-		std::cout << "DEBUG for list, after merge, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
-#endif
 	}
 
 	// Copy the remaining elements of
@@ -370,18 +341,15 @@ void PmergeMe::merge_list(LIST& list, int const left, int const mid,
 
 	// Copy the remaining elements of
 	// rightList, if there are any
-#ifdef DEBUG
-	std::cout << "DEBUG for list, after copy leftList, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
-#endif
 	while (it2 != rightList.end())
 	{
 		itMerged = list.erase(itMerged);
 		list.insert(itMerged, *(it2));
+#ifdef DEBUG
+	std::cout << "DEBUG for list, after insert, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
+#endif
 		it2++;
 	}
-#ifdef DEBUG
-	std::cout << "DEBUG for list, after copy rightList, itMerged pos: " << std::distance(list.begin(), itMerged) << std::endl;
-#endif
 }
 
 // begin is for left index and end is right index
@@ -399,22 +367,30 @@ void PmergeMe::merge_sort_list(LIST& list, int const begin, int const end)
 
 
 // ----------- CONTAINER VECTOR
-void	PmergeMe::sort_vector()
+void	PmergeMe::sort_vec()
 {
-	// 1 -- group the elements into n/2 pairs and sort each pair
-	// 2 -- perform n/2 comparisons to determine the larger of the 2 elements
 	int		size = static_cast<int>(_v.size());
 	int		last = -1;
 	VECTOR	big;
 
 	fill_vector_of_pairs(big);
+#ifdef DEBUG
+	std::cout << "\tStep 1 -- group elements into n/2 pairs ---" << std::endl;
+	std::cout << "\tStep 2 -- perform n/2 comparisons to determine the larger of the 2 elements ---" << std::endl;
+	print_vec_of_pairs(big);
+#endif
 
 	if (size % 2)
 		last = _v.back();
-	// 3 -- and recursively sort the n/2 larger elements from each pair
+#ifdef DEBUG
+	std::cout << "\tStep 3A -- recursively sort the n/2 larger elements from each pair" << std::endl;
+#endif
 	merge_sort_vec(big, 0, static_cast<int>(big.size()) - 1);
 
-	// 3 -- create a sequence S of n/2 of the input elements, in ascending order
+#ifdef DEBUG
+	print_vec_of_pairs(big);
+	std::cout << "\tStep 3B -- create a sequence S of n/2 of the input elements, in ascending order ---" << std::endl;
+#endif
 	_v.clear();
 	VECTOR::iterator	itb = big.begin();
 	while (itb != big.end())
@@ -423,13 +399,19 @@ void	PmergeMe::sort_vector()
 		itb++;
 	}
 
-	// 4 -- insert at the start of S the element that was paired with
-	// the first and smallest element of S
+#ifdef DEBUG
+	print_vec(_v);
+	std::cout << "\tStep 4 -- insert at the start of S the element that was paired with the first and smallest element of S ---" << std::endl;
+#endif
 	_v.insert(_v.begin(), (big.front()).first);
 	big.erase(big.begin());
 
-	// 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time,
-	// with a specially chosen insertion ordering
+#ifdef DEBUG
+	print_vec(_v);
+	std::cout << "x1, x2, x3, etc" << std::endl;
+	std::cout << "\tStep 5 -- insert the remaining n/2 - 1 elements of X into S, one at a time, with a specially chosen insertion ordering ---" << std::endl;
+#endif
+	// order is y4, y3, y6, y5, y12, y11, y10, etc
 	int	sizeGroup = 0;
 	int	nb_of_ele_to_insert;
 	int	nb_of_ele_to_erase;
@@ -451,12 +433,12 @@ void	PmergeMe::sort_vector()
 			// at which each element should be inserted
 #ifdef DEBUG
 			print_vec_of_pairs(big);
-			std::cout << "iterator pos: " << std::distance(big.begin(), itb) << std::flush;
-			std::cout << ", value to insert: " << (*itb).first << std::endl;
-			std::cout << "before insertion: " << std::flush;
-			print_vec(_v);
+			std::cout << "vector of pairs iterator pos: " << std::distance(big.begin(), itb) << std::flush;
+			std::cout << ", so the value to insert in sequence: " << std::flush;
+				print_vec(_v);
+				std::cout << "is: " << (*itb).first << std::endl;
 #endif
-			binary_search_insert_vec(_v, 0, size - 1, (*itb).first);
+			binary_search_insert_vec(_v, 0, _v.size() - 1, (*itb).first);
 
 #ifdef DEBUG
 			std::cout << "after insertion: " << std::flush;
@@ -464,7 +446,7 @@ void	PmergeMe::sort_vector()
 #endif
 			nb_of_ele_to_insert--;
 			itb--;
-			// erase every inserted element from big
+			// erase pairs of elements that were inserted
 			while (nb_of_ele_to_insert == 0 && nb_of_ele_to_erase > 0 && big.empty() == false)
 			{
 				itb = big.begin();
@@ -472,7 +454,7 @@ void	PmergeMe::sort_vector()
 				nb_of_ele_to_erase--;
 			}
 #ifdef DEBUG
-			std::cout << "pairs remaining " << std::flush;
+			std::cout << "remaining " << std::flush;
 			print_vec_of_pairs(big);
 			std::cout << std::endl;
 #endif
@@ -536,10 +518,10 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 	copy_data_to_subvec(vec, rightVec, mid + 1, rightVecSize);
 
 #ifdef DEBUG
-	/* std::cout << "Left vec " << std::flush; */
-	/* print_vec_of_pairs(leftVec); */
-	/* std::cout << "Right vec " << std::flush; */
-	/* print_vec_of_pairs(rightVec); */
+	std::cout << "tmp Left vec " << std::flush;
+	print_vec_of_pairs(leftVec);
+	std::cout << "tmp Right vec " << std::flush;
+	print_vec_of_pairs(rightVec);
 #endif
 	VECTOR::iterator	it1 = leftVec.begin();
 	VECTOR::iterator	it2 = rightVec.begin();
@@ -564,9 +546,6 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 		itMerged++;
 	}
 
-#ifdef DEBUG
-	std::cout << "DEBUG for vec, after merge, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
-#endif
 	// Copy the remaining elements of
 	// leftVec, if there are any
 	while (it1 != leftVec.end())
@@ -579,19 +558,16 @@ void	PmergeMe::merge_vec(VECTOR& vec, int const left, int const mid,
 
 	// Copy the remaining elements of
 	// rightVec, if there are any
-#ifdef DEBUG
-	std::cout << "DEBUG for vec, after left[] copy, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
-#endif
 	while (it2 != rightVec.end())
 	{
 		itMerged = vec.erase(itMerged);
 		vec.insert(itMerged, *(it2));
+#ifdef DEBUG
+	std::cout << "DEBUG for vec, after insert, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
+#endif
 		itMerged++;
 		it2++;
 	}
-#ifdef DEBUG
-	std::cout << "DEBUG for vec, after right[] copy, itMerged pos: " << std::distance(vec.begin(), itMerged) << std::endl;
-#endif
 }
 
 
@@ -610,25 +586,30 @@ void	PmergeMe::copy_data_to_subvec(VECTOR &bigVec, VECTOR& subvec,
 	}
 }
 
-void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_insert)
+void	binary_search_insert_vec(std::vector<int>& sequence,
+		int l, int r, int val_to_insert)
 {
-	/* std::cout << "In binary_search_insert_list" << std::endl; */
+#ifdef DEBUG
+	std::cout << "Binary search the insertion position" << std::endl;
+#endif
 	int	m;
-	std::vector<int>::iterator	it = list.begin();
+	std::vector<int>::iterator	it;
 	while (l <= r)
 	{
 		m = l + (r - l) / 2;
-		/* std::cout << "l=" << l << " , r=" << r << " ,m= " << m << std::endl; */
-		it = list.begin();
+#ifdef DEBUG
+		std::cout << "l=" << l << " , r=" << r << " ,m= " << m << std::endl;
+#endif
+		it = sequence.begin();
 		std::advance(it, m);
 #ifdef DEBUG
-		/* print_list(list); */
-		/* std::cout << "*it= " << *it << std::endl; */
+		print_vec(sequence);
+		std::cout << "comparing value_to_insert to " << *it << " at position " << std::distance(sequence.begin(), it) << std::endl;
 #endif
 		// Check if val_to_insert is present at mid
 		if ((*it) == val_to_insert)
 		{
-			list.insert(it, val_to_insert);
+			sequence.insert(it, val_to_insert);
 			return ;
 		}
 		// If val_to_insert greater, ignore left half
@@ -641,10 +622,10 @@ void	binary_search_insert_vec(std::vector<int>& list, int l, int r, int val_to_i
 	if (*it < val_to_insert)
 		it++;
 #ifdef DEBUG
-	/* std::cout << "iterator pos: " << std::distance(list.begin(), it) << std::endl; */
+	std::cout << "proceeding insertion before pos: " << std::distance(sequence.begin(), it) << std::endl;
 #endif
-	list.insert(it, val_to_insert);
-	/* std::cout << "Out binary_search_insert_list\n" << std::endl; */
+	sequence.insert(it, val_to_insert);
+	/* std::cout << "Out binary_search_insert_sequence\n" << std::endl; */
 }
 
 void	PmergeMe::sort()
@@ -656,16 +637,19 @@ void	PmergeMe::sort()
 	
 	std::cout << "Before: " << std::flush;
 	print_vec(_v);
+
 	// time used by algo to sort a vector
 	gettimeofday(&start, NULL);
-	sort_vector();
+	sort_vec();
 	gettimeofday(&end, NULL);
 	timerOne = calc_usec(start, end);
+
 	std::cout << "After: " << std::flush;
 	print_vec(_v);
 
 	std::cout << "Time to process a range of " << _v.size() << " elements with std::vector : "
 		<< timerOne << " us" << std::endl;
+
 	// time used by algo to sort a list
 	gettimeofday(&start, NULL);
 	sort_list();
@@ -673,4 +657,5 @@ void	PmergeMe::sort()
 	timerTwo = calc_usec(start, end);
 	std::cout << "Time to process a range of " << _v.size() << " elements with std::list : "
 		<< timerTwo << " us" << std::endl;
+	print_list(_l);
 }
