@@ -141,7 +141,7 @@ bool	PmergeMe::is_zero(std::string &s)
 
 bool	PmergeMe::is_a_posi_num(std::string& word)
 {
-	long long	num = static_cast<long long>(atoi(word.c_str()));
+	long long	num = static_cast<long long>(strtol(word.c_str(), NULL, 10));
 
 	if (num > static_cast<long long>(INT_MAX))
 		throw std::runtime_error(ERR_INT_MAX);

@@ -3,7 +3,9 @@
 
 # include <iostream>
 # include <exception>
-# include <limits.h>
+# include <climits>
+# include <cstdlib> // strtol
+
 # include <list>
 # include <vector>
 # include <string>
