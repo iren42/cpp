@@ -11,14 +11,13 @@ OBJ	= $(SRC:.cpp=.o)
 CC		= c++
 
 CFLAG	= -std=c++98 -Wall -Wextra -Werror 
-#-Wconversion -Wsign-conversion
 
 ifeq ($(DEBUG), 1)
 	CFLAG += -DDEBUG -fsanitize=address -g
 endif
 
-SANI	= 
-#-fsanitize=address -g3 
+SANI	=
+#-fsanitize=address -g3 -Wconversion -Wsign-conversion
 
 RM		= rm -f
 
@@ -27,10 +26,10 @@ RM		= rm -f
 all		: $(NAME)
 
 $(OBJ)	: $(SRC) $(HEADER)
-			$(CC) $(CFLAG)  -c $(SRC)
+			$(CC) $(CFLAG) $(SANI)  -c $(SRC)
 
 $(NAME) : $(OBJ) $(HEADER)
-			$(CC) $(CFLAG)  -o $@ $(OBJ) 
+			$(CC) $(CFLAG) $(SANI) -o $@ $(OBJ) 
 
 
 .PHONY: clean

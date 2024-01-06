@@ -13,7 +13,7 @@
 # include <sys/time.h>
 # include <ctime>
 
-# define ERR_ARG "Error: not enough arguments."
+# define ERR_ARG "Error: need at least one positive integers as arguments."
 # define ERR_INPUT "Error: input not valid."
 # define ERR_INT_MAX "Error: INT overflow."
 # define ERR_INT_MIN "Error: INT underflow."

@@ -79,7 +79,7 @@ PmergeMe::PmergeMe(int ac, char **av)
 	int	i;
 
 	i = 1;
-	_v.reserve(ac - 1);
+	_v.reserve(static_cast<size_t>(ac) - 1);
 	while (i < ac)
 	{
 		_l.push_back(atoi(av[i]));
@@ -183,13 +183,13 @@ void	PmergeMe::sort_list()
 {
 	// 1 -- group the elements into n/2 pairs and sort each pair
 	// 2 -- perform n/2 comparisons to determine the larger of the 2 elements
-	int		size = static_cast<int>(_l.size());
+	/* int		size = static_cast<int>(_l.size()); */
 	int		last = -1;
 	LIST	big;
 
 	fill_list_of_pairs(big);
 	// last element in a odd number of elements
-	if (size % 2)
+	if (_l.size() % 2)
 		last = _l.back();
 
 	// 3 -- and recursively sort the n/2 larger elements from each pair
@@ -216,7 +216,7 @@ void	PmergeMe::sort_list()
 	int	nb_of_ele_to_insert;
 	int	nb_of_ele_to_erase;
 	int	i = 1;
-	while (sizeGroup < size && big.empty() == false)
+	while (sizeGroup < static_cast<int>(_l.size()) && big.empty() == false)
 	{
 		itb = big.begin();
 		sizeGroup = calc_size_group(i++, sizeGroup);
@@ -226,17 +226,20 @@ void	PmergeMe::sort_list()
 		nb_of_ele_to_erase = sizeGroup;
 
 		std::advance(itb, nb_of_ele_to_insert - 1);
-		while (nb_of_ele_to_insert > 0 && nb_of_ele_to_erase > 0 && big.empty() == false) 
+		while (nb_of_ele_to_insert > 0 && nb_of_ele_to_erase > 0
+				&& big.empty() == false) 
 		{
 			// insert all elements from current size group ;
 			// use a binary search to determine the position
 			// at which each element should be inserted
-			binary_search_insert_list(_l, 0, _l.size() - 1, (*itb).first);
+			binary_search_insert_list(_l, 0, static_cast<int>(_l.size()) - 1,
+					(*itb).first);
 
 			nb_of_ele_to_insert--;
 			itb--;
 			// erase every inserted element from big
-			while (nb_of_ele_to_insert == 0 && nb_of_ele_to_erase > 0 && big.empty() == false)
+			while (nb_of_ele_to_insert == 0 && nb_of_ele_to_erase > 0
+					&& big.empty() == false)
 			{
 				itb = big.begin();
 				big.erase(itb);
@@ -245,7 +248,7 @@ void	PmergeMe::sort_list()
 		}
 	}
 	if (last >= 0)
-		binary_search_insert_list(_l, 0, size - 1, last);
+		binary_search_insert_list(_l, 0, static_cast<int>(_l.size()) - 1, last);
 }
 
 // do a binary search in list to insert val_to_insert in it
@@ -369,7 +372,7 @@ void PmergeMe::merge_sort_list(LIST& list, int const begin, int const end)
 // ----------- CONTAINER VECTOR
 void	PmergeMe::sort_vec()
 {
-	int		size = static_cast<int>(_v.size());
+	/* int		size = static_cast<int>(_v.size()); */
 	int		last = -1;
 	VECTOR	big;
 
@@ -380,7 +383,7 @@ void	PmergeMe::sort_vec()
 	print_vec_of_pairs(big);
 #endif
 
-	if (size % 2)
+	if (_v.size() % 2)
 		last = _v.back();
 #ifdef DEBUG
 	std::cout << "\tStep 3A -- recursively sort the n/2 larger elements from each pair" << std::endl;
@@ -416,7 +419,7 @@ void	PmergeMe::sort_vec()
 	int	nb_of_ele_to_insert;
 	int	nb_of_ele_to_erase;
 	int	i = 1;
-	while (sizeGroup < size && big.empty() == false)
+	while (sizeGroup < static_cast<int>(_v.size()) && big.empty() == false)
 	{
 		itb = big.begin();
 		sizeGroup = calc_size_group(i++, sizeGroup);
@@ -438,7 +441,8 @@ void	PmergeMe::sort_vec()
 				print_vec(_v);
 				std::cout << "is: " << (*itb).first << std::endl;
 #endif
-			binary_search_insert_vec(_v, 0, _v.size() - 1, (*itb).first);
+			binary_search_insert_vec(_v, 0, static_cast<int>(_v.size()) - 1,
+					(*itb).first);
 
 #ifdef DEBUG
 			std::cout << "after insertion: " << std::flush;
@@ -447,7 +451,8 @@ void	PmergeMe::sort_vec()
 			nb_of_ele_to_insert--;
 			itb--;
 			// erase pairs of elements that were inserted
-			while (nb_of_ele_to_insert == 0 && nb_of_ele_to_erase > 0 && big.empty() == false)
+			while (nb_of_ele_to_insert == 0 && nb_of_ele_to_erase > 0
+					&& big.empty() == false)
 			{
 				itb = big.begin();
 				big.erase(itb);
@@ -461,7 +466,7 @@ void	PmergeMe::sort_vec()
 		}
 	}
 	if (last >= 0)
-		binary_search_insert_vec(_v, 0, size - 1, last);
+		binary_search_insert_vec(_v, 0, static_cast<int>(_v.size()) - 1, last);
 }
 
 void	PmergeMe::fill_vector_of_pairs(VECTOR& bigV)
