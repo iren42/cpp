@@ -64,7 +64,7 @@ bool	BitcoinExchange::parse_value(const std::string& n,
 		print(ERR_BAD_INPUT(inputLine));
 		return (false);
 	}
-	res = atof(n.c_str());
+	res = strtod(n.c_str(), NULL);
 	if (res < 0)
 	{
 		print(ERR_NOT_POS);
@@ -213,8 +213,9 @@ void	BitcoinExchange::exchange_rate(const std::string& buf)
 		}
 		--it;
 	}
-	/* std::cout << ::atof(value.c_str()) << std::endl; */
-	result = atof(((*it).second).c_str()) * atof(value.c_str());
+	result = strtod(((*it).second).c_str(), NULL) * strtod(value.c_str(), NULL);
+	if (result == HUGE_VAL)
+		throw std::runtime_error(ERR_RANGE);
 	std::cout << date << " => " << value << " = " << result << std::endl;
 }
 

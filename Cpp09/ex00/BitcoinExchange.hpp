@@ -8,7 +8,8 @@
 
 # include <map>
 # include <utility> // std::make_pair()
-# include <stdlib.h> // atof
+# include <cstdlib> // strtod
+# include <cmath> // HUGE_VAL
 # include <sstream> // std::istringstream
 # include <ctime> // mktime() localtime()
 
@@ -21,6 +22,7 @@
 # define ERR_NOT_POS "Error: not a positive number."
 # define ERR_TOO_BIG "Error: too large a number."
 # define ERR_BAD_INPUT(erroneusline) "Error: bad input => " + erroneusline 
+# define ERR_RANGE "Error: value is out of range."
 
 # define MAP std::map<std::string, std::string>
 
